@@ -1,0 +1,12 @@
+# Compilación de Maven
+target/
+# Logs de ejecución (pueden contener datos operativos)
+logs/
+*.log
+# IDE y sistema
+.idea/
+*.iml
+.vscode/
+.DS_Store
+# Archivos generados por los reportes
+salida/
