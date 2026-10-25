@@ -1,0 +1,7 @@
+    </main>
+    <footer class="pie">VetSalud ERP v0.4.0 · Clínica Veterinaria VetSalud Integral S.A.C. · Solicitud <c:out value="${idSolicitud}"/></footer>
+  </div>
+</div>
+<script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+</body>
+</html>
