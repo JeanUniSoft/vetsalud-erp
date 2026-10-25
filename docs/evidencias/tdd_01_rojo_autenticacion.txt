@@ -1,0 +1,7 @@
+$ mvn test-compile   # 25/10/2026 18:47 — fase ROJA: pruebas escritas antes que el servicio
+[ERROR] COMPILATION ERROR : 
+[ERROR] src/test/java/pe/vetsalud/erp/fakes/AlertaDaoEnMemoria.java:[6,27] cannot find symbol
+[ERROR] src/test/java/pe/vetsalud/erp/fakes/AlertaDaoEnMemoria.java:[7,30] cannot find symbol
+[ERROR] src/test/java/pe/vetsalud/erp/fakes/AlertaDaoEnMemoria.java:[9,44] cannot find symbol
+[ERROR] src/test/java/pe/vetsalud/erp/fakes/AlertaDaoEnMemoria.java:[19,17] cannot find symbol
+[ERROR] src/test/java/pe/vetsalud/erp/fakes/AlertaDaoEnMemoria.java:[24,17] cannot find symbol
