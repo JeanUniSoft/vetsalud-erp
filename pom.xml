@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>pe.vetsalud</groupId>
+  <artifactId>vetsalud-erp</artifactId>
+  <version>0.4.0</version>
+  <packaging>war</packaging>
+  <name>VetSalud ERP</name>
+  <description>ERP web de la Clínica Veterinaria VetSalud Integral S.A.C. (Curso Integrador I, UTP) · APF3</description>
+
+  <properties>
+    <maven.compiler.release>25</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <tomcat.version>9.0.98</tomcat.version>
+    <guava.version>33.4.0-jre</guava.version>
+    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <commons-text.version>1.12.0</commons-text.version>
+    <poi.version>5.5.1</poi.version>
+    <logback.version>1.5.18</logback.version>
+    <slf4j.version>2.0.17</slf4j.version>
+    <postgresql.version>42.7.12</postgresql.version>
+    <junit.version>5.13.4</junit.version>
+  </properties>
+
+  <dependencies>
+    <!-- ===== Servidor web (RNF-13: WAR en Apache Tomcat 9, Servlet 4.0 + JSP 2.3) =====
+         "provided": en producción los aporta el Tomcat 9 instalado; en desarrollo los usa el lanzador embebido. -->
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-core</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-jasper</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- JSTL: etiquetas c:out / c:forEach que escapan HTML en las vistas (prevención de XSS) -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <!-- ===== Recursos Java de apoyo (S10) ===== -->
+    <!-- Google Guava: Preconditions (validación), Cache (catálogos y permisos), colecciones inmutables -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+    <!-- Apache Commons Lang/Text: StringUtils, Validate, NumberUtils y escape de texto -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>${commons-text.version}</version>
+    </dependency>
+    <!-- Apache POI: reportes Excel (.xlsx) · RF-33, RF-34, RF-36 -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>${poi.version}</version>
+    </dependency>
+    <!-- SLF4J + Logback: log técnico, de errores y de auditoría con datos enmascarados · RF-04, RNF-15, RNF-16 -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <!-- Apache POI registra con Log4j2 API; este puente lo redirige a SLF4J/Logback -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-to-slf4j</artifactId>
+      <version>2.24.3</version>
+    </dependency>
+
+    <!-- ===== Persistencia ===== -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+    </dependency>
+
+    <!-- ===== Pruebas (TDD) ===== -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.0</version>
+        <configuration>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.3</version>
+        <configuration>
+          <systemPropertyVariables>
+            <vetsalud.logdir>${project.build.directory}/test-logs</vetsalud.logdir>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+      <!-- Copia las librerías a target/lib para ejecutar el servidor con java -cp -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.8.1</version>
+        <executions>
+          <execution>
+            <id>copiar-librerias</id>
+            <phase>package</phase>
+            <goals><goal>copy-dependencies</goal></goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+        <configuration>
+          <warName>vetsalud-erp</warName>
+        </configuration>
+      </plugin>
+      <!-- mvn compile exec:java  → levanta el ERP en http://localhost:8080 -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>pe.vetsalud.erp.Servidor</mainClass>
+          <classpathScope>compile</classpathScope>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
