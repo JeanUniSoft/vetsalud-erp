@@ -42,8 +42,9 @@ public final class Servidor {
         ctx.setCookieProcessor(cookies);
 
         StandardRoot recursos = new StandardRoot(ctx);
+        String clases = System.getProperty("clases", "target/classes");
         recursos.addPreResources(new DirResourceSet(recursos, "/WEB-INF/classes",
-                new File("target/classes").getAbsolutePath(), "/"));
+                new File(clases).getAbsolutePath(), "/"));
         ctx.setResources(recursos);
 
         tomcat.start();
