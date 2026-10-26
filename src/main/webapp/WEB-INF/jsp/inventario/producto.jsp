@@ -38,7 +38,7 @@
       <form method="get" action="${ctx}/inventario/producto" class="form-fila">
         <input type="hidden" name="id" value="${producto.idProducto}">
         <div class="campo"><label for="cantidad">Cantidad a dispensar</label>
-          <input id="cantidad" name="cantidad" type="number" min="0.01" step="${producto.admiteDecimales() ? '0.01' : '1'}" required value="<c:out value='${cantidadSimulada}'/>"></div>
+          <input id="cantidad" name="cantidad" type="number" min="${producto.admiteDecimales() ? '0.01' : '1'}" step="${producto.admiteDecimales() ? '0.01' : '1'}" required value="<c:out value='${cantidadSimulada}'/>"></div>
         <button type="submit" class="btn btn-secundario">Sugerir lote (FEFO)</button>
       </form>
       <c:if test="${not empty cantidadSimulada}">

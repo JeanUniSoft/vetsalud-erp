@@ -46,7 +46,7 @@
           <c:forEach var="t" items="${tiposAjuste}"><option value="${t}">${t == 'AJUSTE_ENTRADA' ? 'Entrada (+): aumenta el stock' : 'Salida (−): disminuye el stock'}</option></c:forEach>
         </select></div>
       <div class="campo"><label for="cantidad">Cantidad <span class="req">*</span></label>
-        <input id="cantidad" name="cantidad" type="number" required min="0.01" step="${productoSel.admiteDecimales() ? '0.01' : '1'}"></div>
+        <input id="cantidad" name="cantidad" type="number" required min="${productoSel.admiteDecimales() ? '0.01' : '1'}" step="${productoSel.admiteDecimales() ? '0.01' : '1'}"></div>
       <div class="campo"><label for="motivo">Motivo <span class="req">*</span></label>
         <select id="motivo" name="motivo" required>
           <option value="">Seleccione…</option>

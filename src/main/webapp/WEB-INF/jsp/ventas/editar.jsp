@@ -114,7 +114,7 @@
               </fieldset>
               <div class="form-fila">
                 <div class="campo chico"><label for="cantidadProducto">Cantidad</label>
-                  <input id="cantidadProducto" name="cantidad" type="number" min="0.01" step="${productoSel.admiteDecimales() ? '0.01' : '1'}" value="1" required></div>
+                  <input id="cantidadProducto" name="cantidad" type="number" min="${productoSel.admiteDecimales() ? '0.01' : '1'}" step="${productoSel.admiteDecimales() ? '0.01' : '1'}" value="1" required></div>
                 <button type="submit" class="btn btn-primario">Agregar a la venta</button>
               </div>
             </form>
