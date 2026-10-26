@@ -1,0 +1,16 @@
+<%-- Valor de una celda según el tipo de su columna. Requiere ${v} (valor) y ${col} (ReporteColumna). --%>
+<c:choose>
+  <c:when test="${empty v}">—</c:when>
+  <c:when test="${col.tipo == 'MONEDA'}"><c:out value="${vs:soles(v)}"/></c:when>
+  <c:when test="${col.tipo == 'DECIMAL'}"><c:out value="${vs:numero(v)}"/></c:when>
+  <c:when test="${col.tipo == 'PORCENTAJE'}"><c:out value="${vs:numero(v)}"/> %</c:when>
+  <c:when test="${col.tipo == 'FECHA'}"><c:out value="${vs:fecha(v)}"/></c:when>
+  <c:when test="${col.tipo == 'FECHA_HORA'}"><c:out value="${vs:fechaHora(v)}"/></c:when>
+  <c:when test="${col.titulo == 'Condición' or col.titulo == 'Lectura' or col.titulo == 'Estado'}">
+    <c:set var="claseBadge" value="${v == 'Vencido' or v == 'Agotado' or v == 'No asistió' ? 'badge badge-error'
+        : (v == 'Por vencer' or v == 'Stock bajo' or v == 'Baja' or v == 'Cancelada' ? 'badge badge-aviso'
+        : (v == 'Normal' or v == 'Alta' ? 'badge badge-ok' : 'badge badge-neutro'))}"/>
+    <span class="${claseBadge}"><c:out value="${v}"/></span>
+  </c:when>
+  <c:otherwise><c:out value="${v}"/></c:otherwise>
+</c:choose>

@@ -1,0 +1,14 @@
+<%-- Tarjetas KPI del periodo filtrado (RF-32). Requiere ${kpis}: lista de KpiReporte. --%>
+<div class="rejilla rejilla-4">
+  <c:forEach var="k" items="${kpis}">
+    <div class="kpi${k.destacado ? ' destacado' : ''}">
+      <div class="etiqueta"><c:out value="${k.etiqueta}"/></div>
+      <div class="valor"><c:choose>
+        <c:when test="${k.formato == 'MONEDA'}"><c:out value="${vs:soles(k.valor)}"/></c:when>
+        <c:when test="${k.formato == 'PORCENTAJE'}"><c:out value="${vs:numero(k.valor)}"/> %</c:when>
+        <c:otherwise><c:out value="${vs:numero(k.valor)}"/></c:otherwise>
+      </c:choose></div>
+      <div class="detalle"><c:out value="${k.detalle}"/></div>
+    </div>
+  </c:forEach>
+</div>

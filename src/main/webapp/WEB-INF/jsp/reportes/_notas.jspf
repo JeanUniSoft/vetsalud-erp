@@ -1,0 +1,6 @@
+<%-- Notas del reporte (criterios y fórmulas). Requiere ${t}: ReporteTabla. --%>
+<c:if test="${not empty t.notas}">
+  <ul class="notas-reporte">
+    <c:forEach var="nota" items="${t.notas}"><li><c:out value="${nota}"/></li></c:forEach>
+  </ul>
+</c:if>

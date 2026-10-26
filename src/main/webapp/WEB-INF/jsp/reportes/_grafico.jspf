@@ -1,0 +1,20 @@
+<%-- Gráfico de barras horizontales en SVG con atributos y clases (sin style en línea, CSP).
+     Requiere ${g}: ReporteGrafico. Largo máximo de barra: 390 unidades del viewBox. --%>
+<c:if test="${not empty g and not empty g.barras}">
+  <figure class="grafico-reporte">
+    <figcaption><strong><c:out value="${g.titulo}"/></strong><c:if test="${g.recortado()}"> · se muestran las <c:out value="${fn:length(g.barras)}"/> primeras de <c:out value="${g.categorias}"/> categorías</c:if></figcaption>
+    <svg class="grafico grafico-h" viewBox="0 0 720 ${g.alto()}" role="img" aria-label="<c:out value='${g.titulo}'/>">
+      <c:forEach var="b" items="${g.barras}" varStatus="ib">
+        <c:set var="yb" value="${ib.index * 30 + 6}"/>
+        <c:set var="largo" value="${b.largo()}"/>
+        <text x="196" y="${yb + 15}" text-anchor="end" class="etiqueta-svg"><c:out value="${b.etiqueta}"/></text>
+        <rect x="206" y="${yb}" width="390" height="20" rx="4" class="fondo-svg"/>
+        <rect x="206" y="${yb}" width="${largo}" height="20" rx="4" class="barra-svg"><title><c:out value="${b.completo}"/></title></rect>
+        <text x="${212 + largo}" y="${yb + 15}" class="valor-svg"><c:choose>
+          <c:when test="${g.tipo == 'MONEDA'}"><c:out value="${vs:soles(b.valor)}"/></c:when>
+          <c:otherwise><c:out value="${vs:numero(b.valor)}"/></c:otherwise>
+        </c:choose></text>
+      </c:forEach>
+    </svg>
+  </figure>
+</c:if>
