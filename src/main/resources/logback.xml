@@ -79,6 +79,20 @@
   <logger name="org.apache.poi" level="WARN"/>
   <logger name="org.postgresql" level="WARN"/>
 
+  <!-- Notificaciones (RF-37): destinatario enmascarado, sin datos clínicos -->
+  <appender name="NOTIFICACIONES" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_DIR}/notificaciones.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_DIR}/historico/notificaciones-%d{yyyy-MM}.log.gz</fileNamePattern>
+      <maxHistory>12</maxHistory>
+    </rollingPolicy>
+    <encoder><pattern>${PATRON}</pattern></encoder>
+  </appender>
+  <logger name="NOTIFICACIONES" level="INFO" additivity="false">
+    <appender-ref ref="NOTIFICACIONES"/>
+    <appender-ref ref="CONSOLA"/>
+  </logger>
+
   <root level="INFO">
     <appender-ref ref="CONSOLA"/>
     <appender-ref ref="ARCHIVO_ASYNC"/>

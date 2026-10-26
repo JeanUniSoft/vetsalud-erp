@@ -2,6 +2,10 @@
 <c:set var="titulo" value="Clientes y mascotas"/><c:set var="seccion" value="clientes"/>
 <%@ include file="/WEB-INF/jsp/layout/inicio.jspf" %>
 <p class="etiqueta-pantalla">P03 · Búsqueda por documento, nombre, teléfono o correo (RF-06)</p>
+<nav class="pestanas" aria-label="Clientes y mascotas">
+  <a class="activo" href="${pageContext.request.contextPath}/clientes">Clientes</a>
+  <a href="${pageContext.request.contextPath}/mascotas">Mascotas</a>
+</nav>
 <section class="tarjeta">
   <form method="get" action="${pageContext.request.contextPath}/clientes" class="barra-herramientas">
     <div class="campo crece">
