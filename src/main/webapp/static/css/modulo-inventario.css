@@ -1,0 +1,28 @@
+/* =====================================================================
+   P07 · Inventario por lotes (complemento de app.css; sin estilos en línea por la CSP)
+   ===================================================================== */
+.solo-lector { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+a.kpi-enlace { display: block; text-decoration: none; color: inherit; transition: border-color .15s; }
+a.kpi-enlace:hover, a.kpi-enlace:focus-visible { border-color: var(--marca); }
+.kpi.kpi-error { border-color: #f0b4ad; background: var(--error-fondo); }
+.kpi.kpi-aviso { border-color: #f2d48b; background: var(--aviso-fondo); }
+.badges { display: flex; gap: 4px; flex-wrap: wrap; }
+.tabla-lineas td { padding: 6px; vertical-align: middle; }
+.tabla-lineas .col-producto { min-width: 230px; }
+.tabla-lineas .col-lote { min-width: 120px; }
+.tabla-lineas .col-fecha { min-width: 150px; }
+.tabla-lineas .col-num { min-width: 95px; }
+.tabla-lineas .n-linea { color: var(--texto-suave); font-weight: 600; width: 28px; }
+.fila-fefo td { background: #f2faf7; }
+.lista-opciones { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.lista-opciones label { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--borde); border-radius: 8px; font-weight: 500; cursor: pointer; flex-wrap: wrap; }
+.lista-opciones label:hover { background: #f8fafb; }
+.lista-opciones input[disabled] + span { color: var(--texto-suave); }
+.form-fila { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+.form-fila .campo { min-width: 160px; }
+.form-fila .campo.crece { flex: 1; }
+.resultado-fefo { border: 1px solid #b7e1c7; background: var(--ok-fondo); border-radius: 8px; padding: 10px 14px; margin-top: 12px; }
+.resultado-fefo.sin-stock { border-color: #f5c2bd; background: var(--error-fondo); }
+.totales-kardex { display: flex; gap: 18px; flex-wrap: wrap; font-size: .9rem; color: var(--texto-suave); margin: 0 0 10px; }
+.totales-kardex strong { color: var(--texto); }
+@media print { .pestanas, .barra-herramientas, form { display: none !important; } }
