@@ -35,6 +35,9 @@ public final class ErroresBD {
             .put("producto_codigo_key", "Ya existe un producto con ese código.")
             .put("lote_id_producto_codigo_lote_key", "Ese producto ya tiene un lote con ese código.")
             .put("ingreso_id_proveedor_tipo_doc_num_doc_key", "Ese documento de compra ya fue registrado.")
+            .put("receta_detalle_id_receta_id_producto_key", "Ese producto ya está en la receta.")
+            .put("consulta_id_cita_key", "La cita ya tiene una consulta registrada.")
+            .put("cliente_usuario_id_cliente_key", "Ese cliente ya tiene un usuario del portal.")
             .put("pago_check", "Los pagos con tarjeta, Yape/Plin o transferencia requieren el número de operación.")
             .build();
 
