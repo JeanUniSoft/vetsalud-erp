@@ -1,0 +1,38 @@
+$ mvn test
+
+[INFO] Tests run:   3, Failures: 0, Errors: 0  seguridad.ClaveHasherTest
+[INFO] Tests run:   4, Failures: 0, Errors: 0  seguridad.PoliticaAccesoTest
+[INFO] Tests run:   3, Failures: 0, Errors: 0  servicio.VentaServiceTest$Descarte
+[INFO] Tests run:   3, Failures: 0, Errors: 0  servicio.VentaServiceTest$Anulacion
+[INFO] Tests run:   7, Failures: 0, Errors: 0  servicio.VentaServiceTest$Pagos
+[INFO] Tests run:   5, Failures: 0, Errors: 0  servicio.VentaServiceTest$Descuentos
+[INFO] Tests run:   5, Failures: 0, Errors: 0  servicio.VentaServiceTest$Lotes
+[INFO] Tests run:   5, Failures: 0, Errors: 0  servicio.VentaServiceTest
+[INFO] Tests run:   7, Failures: 0, Errors: 0  servicio.CajaServiceTest
+[INFO] Tests run:   8, Failures: 0, Errors: 0  servicio.ProductoServiceTest
+[INFO] Tests run:  14, Failures: 0, Errors: 0  servicio.ReportesServiceTest
+[INFO] Tests run:  45, Failures: 0, Errors: 0  servicio.CitaServiceTest
+[INFO] Tests run:  11, Failures: 0, Errors: 0  servicio.AdminUsuarioServiceTest
+[INFO] Tests run:   3, Failures: 0, Errors: 0  servicio.AdminParametroServiceTest
+[INFO] Tests run:   5, Failures: 0, Errors: 0  servicio.PortalServiceTest
+[INFO] Tests run:  34, Failures: 0, Errors: 0  servicio.ConsultaServiceTest
+[INFO] Tests run:   4, Failures: 0, Errors: 0  servicio.InventarioServiceTest$Ajustes
+[INFO] Tests run:   6, Failures: 0, Errors: 0  servicio.InventarioServiceTest$Ingresos
+[INFO] Tests run:   2, Failures: 0, Errors: 0  servicio.InventarioServiceTest
+[INFO] Tests run:  15, Failures: 0, Errors: 0  servicio.MascotaServiceTest
+[INFO] Tests run:   6, Failures: 0, Errors: 0  servicio.AutenticacionServiceTest
+[INFO] Tests run:   5, Failures: 0, Errors: 0  servicio.HistoriaServiceTest
+[INFO] Tests run:   5, Failures: 0, Errors: 0  servicio.AuditoriaConsultaServiceTest
+[INFO] Tests run:   9, Failures: 0, Errors: 0  servicio.RecordatorioServiceTest
+[INFO] Tests run:   5, Failures: 0, Errors: 0  servicio.ExportadorTest
+[INFO] Tests run:   4, Failures: 0, Errors: 0  servicio.RolPermisoServiceTest
+[INFO] Tests run:   6, Failures: 0, Errors: 0  servicio.ClienteServiceTest
+[INFO] Tests run:   5, Failures: 0, Errors: 0  reporte.ReporteExcelInventarioTest
+[INFO] Tests run:   3, Failures: 0, Errors: 0  log.MascaraDatosSensiblesTest
+[INFO]
+[INFO] Results:
+[INFO] Tests run: 237, Failures: 0, Errors: 0, Skipped: 0
+[INFO] --- jacoco:0.8.14:report → target/site/jacoco/index.html
+[INFO] BUILD SUCCESS
+[INFO] Total time:  4.219 s
+Cobertura de líneas (JaCoCo): servicio 81.8 % · total 45.1 %
