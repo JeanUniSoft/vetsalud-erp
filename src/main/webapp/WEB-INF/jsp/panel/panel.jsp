@@ -40,7 +40,7 @@
           <tbody>
           <c:forEach var="cita" items="${agenda}">
             <tr>
-              <td><strong><c:out value="${vs:hora(cita.inicio)}"/></strong></td>
+              <td><strong><c:choose><c:when test="${sesion.accede('/citas')}"><a href="${pageContext.request.contextPath}/citas/ver?id=${cita.idCita}"><c:out value="${vs:hora(cita.inicio)}"/></a></c:when><c:otherwise><c:out value="${vs:hora(cita.inicio)}"/></c:otherwise></c:choose></strong></td>
               <td><c:out value="${cita.mascota}"/> <small>(<c:out value="${cita.especie}"/>)</small><br><small><c:out value="${cita.cliente}"/></small></td>
               <td><c:out value="${cita.servicio}"/></td>
               <td><c:out value="${cita.veterinario}"/></td>

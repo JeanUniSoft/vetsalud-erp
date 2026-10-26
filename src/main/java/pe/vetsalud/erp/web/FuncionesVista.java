@@ -39,7 +39,7 @@ public final class FuncionesVista {
             .put("AJUSTE_ENTRADA", "Ajuste (+)").put("AJUSTE_SALIDA", "Ajuste (−)").put("DEVOLUCION", "Devolución")
             .put("ENVIADO", "Enviado").put("FALLIDO", "Fallido").put("CANCELADO", "Cancelado").put("RECEPCION", "Recepción")
             .put("VETERINARIO", "Veterinario").put("ADMINISTRADOR", "Administrador").put("TECNICO", "Técnico")
-            .put("FARMACIA", "Farmacia").put("CAJERO", "Caja").put("CLIENTE", "Cliente")
+            .put("FARMACIA", "Farmacia").put("CAJERO", "Caja").put("CLIENTE", "Cliente").put("CLINICA", "Clínica")
             .build();
 
     private FuncionesVista() {
