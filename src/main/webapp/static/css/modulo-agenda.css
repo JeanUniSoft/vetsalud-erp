@@ -1,0 +1,62 @@
+/* =====================================================================
+   VetSalud ERP · P04 Agenda de citas (RF-09 a RF-12, RF-19)
+   Se carga con <c:set var="cssExtra" value="modulo-agenda"/>. Reutiliza los tokens de app.css.
+   ===================================================================== */
+
+/* ---------- navegación del rango visible ---------- */
+.agenda-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.agenda-cabecera h2 { margin: 0; }
+.agenda-nav { display: flex; gap: 6px; align-items: center; }
+.resumen-estados { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; padding: 0; list-style: none; }
+
+/* ---------- vista diaria ---------- */
+.hora-cita { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hora-cita small { display: block; font-weight: 500; color: var(--texto-suave); }
+.acciones-estado { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.acciones-estado form { margin: 0; }
+.tabla tr.cita-liberada td { color: var(--texto-suave); background: #fafbfc; }
+.tabla tr.cita-liberada td strong { text-decoration: line-through; text-decoration-color: rgba(91, 107, 117, .5); }
+.tabla tr.cita-resaltada td { background: var(--marca-suave); }
+.alerta-mini { display: inline-block; margin-top: 3px; font-size: .76rem; color: var(--aviso); background: var(--aviso-fondo); border-radius: 6px; padding: 1px 7px; }
+
+/* ---------- vista semanal: rejilla de 7 columnas ---------- */
+.semana { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+.dia { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); display: flex; flex-direction: column; min-height: 180px; min-width: 0; }
+.dia-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 8px 10px; border-bottom: 1px solid var(--borde); font-weight: 700; font-size: .9rem; }
+.dia-cabecera a { color: var(--texto); text-decoration: none; }
+.dia-cabecera a:hover { color: var(--marca); }
+.dia.hoy { border-color: var(--marca); }
+.dia.hoy .dia-cabecera { background: var(--marca-suave); color: var(--marca-oscura); border-top-left-radius: var(--radio); border-top-right-radius: var(--radio); }
+.dia-citas { list-style: none; margin: 0; padding: 8px; display: grid; gap: 6px; }
+.dia-vacio { color: var(--texto-suave); font-size: .82rem; text-align: center; padding: 18px 6px; margin: 0; }
+.cita-mini { display: grid; gap: 1px; padding: 6px 8px; border-radius: 6px; border-left: 4px solid var(--marca); background: #f6f9fa; color: var(--texto); text-decoration: none; font-size: .8rem; line-height: 1.3; }
+.cita-mini:hover { background: var(--marca-suave); }
+.cita-mini small { color: var(--texto-suave); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cita-mini .badge { justify-self: start; margin-top: 3px; font-size: .7rem; }
+.cita-mini.estado-PENDIENTE { border-left-color: #8796a0; }
+.cita-mini.estado-CONFIRMADA, .cita-mini.estado-ATENDIDA { border-left-color: var(--ok); }
+.cita-mini.estado-EN_ESPERA, .cita-mini.estado-EN_ATENCION { border-left-color: #d69e2e; }
+.cita-mini.estado-CANCELADA, .cita-mini.estado-NO_ASISTIO { border-left-color: var(--error); opacity: .7; }
+
+/* ---------- programar cita ---------- */
+.rejilla-nueva { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.ocupacion { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ocupacion li { display: flex; gap: 8px; align-items: baseline; justify-content: space-between; border-bottom: 1px dashed var(--borde); padding-bottom: 6px; font-size: .88rem; }
+.ocupacion .hora-cita { min-width: 96px; }
+.grupo-vet { font-size: .85rem; margin: 14px 0 6px; color: var(--marca-oscura); }
+.paso { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--marca); color: #fff; font-size: .8rem; margin-right: 6px; }
+
+/* ---------- detalle de la cita ---------- */
+.form-motivo { display: grid; gap: 10px; margin-top: 10px; }
+.botonera-estado { display: flex; gap: 8px; flex-wrap: wrap; }
+.cambio-estado { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+@media (max-width: 1100px) {
+  .semana { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rejilla-nueva { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) { .semana { grid-template-columns: 1fr; } }
+@media print {
+  .semana { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .acciones-estado, .agenda-nav { display: none; }
+}
