@@ -1,0 +1,188 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Historia clínica, procedimientos y receta (P05, P06)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class ConsultasServlet <<controlador>> {
+}
+class HistoriaServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class ConsultaService <<servicio>> {
+  +obtener()
+  +diagnosticos()
+  +procedimientos()
+  +receta()
+  +adendas()
+  …
+}
+class HistoriaService <<servicio>> {
+  +buscar()
+  +consultasAbiertas()
+  +historia()
+}
+}
+package "DAO (interfaces)" {
+interface ConsultaDao <<DAO>> {
+  +buscarPorId()
+  +buscarPorCita()
+  +insertar()
+  +actualizarDatos()
+  +actualizarSignos()
+  …
+}
+interface HistoriaDao <<DAO>> {
+  +consultas()
+  +diagnosticos()
+  +procedimientos()
+  +recetas()
+  +adendas()
+  …
+}
+}
+package "DAO JDBC" {
+class ConsultaDaoJdbc <<JDBC>> {
+  +buscarPorId()
+  +buscarPorCita()
+  +insertar()
+  +actualizarDatos()
+  +actualizarSignos()
+  …
+}
+class HistoriaDaoJdbc <<JDBC>> {
+  +consultas()
+  +diagnosticos()
+  +procedimientos()
+  +recetas()
+  +adendas()
+  …
+}
+}
+package "Modelo" {
+class Adenda <<record>> {
+  idAdenda
+  idConsulta
+  idUsuario
+  autor
+  texto
+  fechaHora
+}
+class Consulta <<record>> {
+  idConsulta
+  idMascota
+  idCita
+  idVeterinario
+  veterinario
+  colegiatura
+  fechaHora
+  …
+}
+class ConsultaDatos <<record>> {
+  motivo
+  anamnesis
+  examenClinico
+  indicaciones
+  fechaControl
+}
+class ConsultaFirma <<record>> {
+  idConsulta
+  fechaControl
+  idClienteRecordatorio
+  recordatorioPara
+  idCitaAtendida
+}
+class ConsultaPermisos <<record>> {
+  datos
+  signos
+  diagnosticar
+  procedimientos
+  recetar
+  firmar
+  adenda
+}
+class ConsultaResumen <<record>> {
+  idConsulta
+  fechaHora
+  idMascota
+  mascota
+  especie
+  cliente
+  idVeterinario
+  …
+}
+class ConsultaSignos <<record>> {
+  temperaturaC
+  frecCardiaca
+  frecRespiratoria
+  pesoKg
+}
+class Diagnostico <<record>> {
+  idDiagnostico
+  idConsulta
+  descripcion
+  esPrincipal
+}
+class EventoHistoria <<record>> {
+  fechaHora
+  tipo
+  titulo
+  detalle
+  autor
+  estado
+  idConsulta
+  …
+}
+class HistoriaClinica <<record>> {
+  mascota
+  eventos
+  consultas
+  recientesPrimero
+}
+class ProcedimientoConsulta <<record>> {
+  idProcConsulta
+  idConsulta
+  idServicio
+  servicio
+  idResponsable
+  responsable
+  cantidad
+  …
+}
+class ProductoReceta <<record>> {
+  idProducto
+  codigo
+  nombre
+  unidad
+  requiereReceta
+  activo
+}
+class Receta <<record>> {
+  idReceta
+  idConsulta
+  fecha
+  indicaciones
+  lineas
+}
+class RecetaLinea <<record>> {
+  idRecetaDet
+  idReceta
+  idProducto
+  producto
+  unidad
+  dosis
+  frecuencia
+  …
+}
+}
+ConsultaDao <|.. ConsultaDaoJdbc
+ConsultaService --> ConsultaDao
+ConsultasServlet --> ConsultaService
+HistoriaDao <|.. HistoriaDaoJdbc
+HistoriaService --> HistoriaDao
+HistoriaServlet --> HistoriaService
+@enduml

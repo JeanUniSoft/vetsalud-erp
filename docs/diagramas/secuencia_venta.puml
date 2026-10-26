@@ -1,0 +1,33 @@
+@startuml
+!include estilo.iuml
+title Secuencia UC-11 Procesar venta y pago (RF-26 a RF-29, RN-06 a RN-12, RNF-08)
+actor Cajero
+participant "VentasServlet" as V
+participant "VentaService" as S
+participant "VentaPosDao" as D
+database "PostgreSQL" as PG
+Cajero -> V : POST /ventas/nueva (cliente, mascota, consulta)
+V -> S : crearVenta(...) [turno ABIERTO del cajero]
+S -> D : insertar venta PENDIENTE
+Cajero -> V : agregar líneas (servicios / productos)
+V -> S : agregarProducto(idVenta, producto, cantidad)
+S -> D : loteSugerido(producto, cantidad)
+D -> PG : SELECT fn_lote_sugerido(...)  -- FEFO (RN-07)
+S -> D : insertar venta_detalle (lote, precio)
+Cajero -> V : registrar pagos (efectivo, tarjeta, Yape/Plin)
+V -> S : agregarPago(...) [referencia obligatoria si no es efectivo]
+Cajero -> V : confirmar (descuento, autorizador si > 10 %)
+V -> S : confirmar(idVenta, descuento, autorizador)
+S -> S : valida descuento y suma de pagos (RN-08, RN-12)
+S -> D : confirmar(...) en una sola transacción
+D -> PG : SELECT fn_confirmar_venta(id, descuento, id_autoriza)
+activate PG
+PG -> PG : correlativo T001-xxxxxxxx sin duplicados (RN-11)
+PG -> PG : INSERT movimiento_inventario VENTA por línea\n→ trigger valida stock y vencimiento (RN-06)
+PG --> D : número de comprobante
+deactivate PG
+D --> S : comprobante
+S --> V : comprobante
+V --> Cajero : 302 → /ventas/comprobante?id= (imprimible, RF-29)
+note over PG : si cualquier paso falla, ROLLBACK:\nni stock ni caja quedan a medias (RNF-08)
+@enduml
