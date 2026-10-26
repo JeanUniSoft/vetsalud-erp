@@ -19,6 +19,8 @@ import pe.vetsalud.erp.config.ConexionBD;
 import pe.vetsalud.erp.log.Auditoria;
 import pe.vetsalud.erp.log.ContextoSolicitud;
 import pe.vetsalud.erp.modelo.FiltroReporte;
+import pe.vetsalud.erp.seguridad.FiltroSeguridad;
+import pe.vetsalud.erp.seguridad.UsuarioSesion;
 import pe.vetsalud.erp.servicio.ReporteException;
 import pe.vetsalud.erp.servicio.ReporteService;
 
@@ -42,8 +44,9 @@ public class ReporteInventarioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession sesion = req.getSession(false);
-        String usuario = sesion == null ? null : (String) sesion.getAttribute("usuario");
-        String rol = sesion == null ? null : (String) sesion.getAttribute("rol");
+        UsuarioSesion u = sesion == null ? null : (UsuarioSesion) sesion.getAttribute(FiltroSeguridad.ATRIBUTO_USUARIO);
+        String usuario = u == null ? null : u.usuario();
+        String rol = u == null ? null : u.rol();
         if (usuario == null) {                       // el filtro de seguridad exige sesión (RF-01)
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
