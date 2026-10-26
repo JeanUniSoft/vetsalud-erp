@@ -1,0 +1,39 @@
+/* =====================================================================
+   VetSalud ERP · P10 Reportes (RF-32 a RF-36)
+   Estilos propios del módulo; los gráficos son SVG con clases (CSP: sin style en línea).
+   ===================================================================== */
+.filtros-reporte { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
+.filtros-reporte .campo { min-width: 150px; }
+.filtros-reporte .campo.crece { flex: 1; min-width: 200px; }
+.acciones-exportar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.leyenda-reporte { font-size: .82rem; color: var(--texto-suave); margin: -4px 0 12px; }
+.notas-reporte { margin: 12px 0 0; padding-left: 18px; font-size: .82rem; color: var(--texto-suave); }
+.notas-reporte li { margin-bottom: 2px; }
+
+/* tablas con fila de totales */
+.tabla tfoot td { font-weight: 700; background: var(--neutro-fondo); border-top: 2px solid #c4d0d7; border-bottom: 0; }
+.tabla td.sin-dato { color: var(--texto-suave); }
+
+/* tarjetas del índice */
+.tarjeta-reporte { display: flex; flex-direction: column; gap: 10px; margin-bottom: 0; }
+.tarjeta-reporte h2 { margin: 0; }
+.tarjeta-reporte p { margin: 0; color: var(--texto-suave); font-size: .9rem; }
+.tarjeta-reporte ul { margin: 0; padding-left: 18px; font-size: .88rem; color: var(--texto-suave); }
+.tarjeta-reporte .acciones-exportar { margin-top: auto; padding-top: 6px; }
+.tarjeta-reporte.s10 { border-style: dashed; }
+
+/* fórmula de rotación */
+.formula { background: var(--marca-suave); border: 1px solid #b9ddd6; border-radius: 8px; padding: 10px 14px;
+  font-size: .88rem; color: var(--marca-oscura); margin-bottom: 14px; }
+.formula p { margin: 2px 0; }
+
+/* gráfico de barras horizontales */
+.grafico-reporte { margin: 0 0 16px; }
+.grafico-reporte figcaption { font-size: .88rem; color: var(--texto-suave); margin-bottom: 6px; }
+.grafico-h .etiqueta-svg { font-size: 13px; fill: var(--texto); }
+.grafico-h .valor-svg { font-size: 13px; }
+.grafico-h .fondo-svg { fill: var(--neutro-fondo); }
+
+@media print {
+  .filtros-reporte, .acciones-exportar, .pestanas { display: none !important; }
+}

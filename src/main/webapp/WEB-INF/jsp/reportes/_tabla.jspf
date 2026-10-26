@@ -1,0 +1,26 @@
+<%-- Tabla genérica de un reporte con fila de totales. Requiere ${t}: ReporteTabla. --%>
+<div class="tabla-scroll"><table class="tabla">
+  <caption class="sr-only"><c:out value="${t.titulo}"/></caption>
+  <thead><tr>
+    <c:forEach var="col" items="${t.columnas}"><th scope="col" class="${col.numerica() ? 'num' : ''}"><c:out value="${col.titulo}"/></th></c:forEach>
+  </tr></thead>
+  <tbody>
+    <c:forEach var="fila" items="${t.filas}">
+      <tr>
+        <c:forEach var="v" items="${fila.valores}" varStatus="iv"><c:set var="col" value="${t.columnas[iv.index]}"/>
+          <td class="${col.numerica() ? 'num' : ''}"><%@ include file="/WEB-INF/jsp/reportes/_celda.jspf" %></td>
+        </c:forEach>
+      </tr>
+    </c:forEach>
+    <c:if test="${empty t.filas}">
+      <tr><td colspan="${fn:length(t.columnas)}" class="vacio">Sin registros para los filtros elegidos.</td></tr>
+    </c:if>
+  </tbody>
+  <c:if test="${not empty t.totales and not empty t.filas}">
+    <tfoot><tr>
+      <c:forEach var="v" items="${t.totales.valores}" varStatus="iv"><c:set var="col" value="${t.columnas[iv.index]}"/>
+        <td class="${col.numerica() ? 'num' : ''}"><c:choose><c:when test="${empty v}"></c:when><c:otherwise><%@ include file="/WEB-INF/jsp/reportes/_celda.jspf" %></c:otherwise></c:choose></td>
+      </c:forEach>
+    </tr></tfoot>
+  </c:if>
+</table></div>
