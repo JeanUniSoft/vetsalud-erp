@@ -1,0 +1,10 @@
+<%-- Clave temporal recién generada (RF-03): se muestra una sola vez. Requiere ${credencial}: AdminCredencial. --%>
+<c:if test="${not empty credencial}">
+  <section class="tarjeta credencial" role="alert">
+    <h2>Clave temporal de <c:out value="${credencial.usuario}"/></h2>
+    <p><c:out value="${credencial.motivo}"/>. Entréguela al usuario por un canal seguro (en persona o por teléfono).
+      <strong>No se volverá a mostrar:</strong> en la base de datos solo queda su hash PBKDF2.</p>
+    <p class="clave-temporal"><code><c:out value="${credencial.claveTemporal}"/></code></p>
+    <p class="ayuda">Al ingresar con esta clave, el sistema le exigirá crear una contraseña propia (RF-03).</p>
+  </section>
+</c:if>
