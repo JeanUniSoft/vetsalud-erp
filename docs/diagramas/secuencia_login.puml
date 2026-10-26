@@ -1,0 +1,34 @@
+@startuml
+!include estilo.iuml
+title Secuencia UC-01 Autenticarse (RF-01, RF-02, RNF-04)
+actor Usuario
+participant "FiltroSeguridad" as F
+participant "LoginServlet" as L
+participant "AutenticacionService" as S
+participant "ClaveHasher\n(PBKDF2-SHA256)" as H
+participant "UsuarioDao" as D
+database "PostgreSQL" as PG
+Usuario -> F : POST /login (usuario, clave, _csrf)
+F -> F : valida token CSRF
+F -> L : doPost()
+L -> S : autenticar(usuario, clave, ip)
+S -> D : buscarPorUsuario(usuario)
+D -> PG : SELECT ... FROM usuario JOIN rol
+alt cuenta inexistente, inactiva o bloqueada
+  S -> D : registrarIntento(..., exitoso=false)
+  S --> L : ReglaNegocioException("Usuario o contraseña incorrectos.")
+else clave incorrecta
+  S -> H : verificar(clave, hash)
+  H --> S : false
+  S -> D : registrarFallo(intentos+1, bloquear si >= MAX_INTENTOS_LOGIN)
+  S --> L : ReglaNegocioException(mensaje genérico)
+else clave correcta
+  S -> H : verificar(clave, hash)
+  H --> S : true
+  S -> D : registrarIngresoExitoso() / registrarIntento(exitoso=true)
+  S -> D : permisosDeRol(rol)
+  S --> L : UsuarioSesion(rol, permisos)
+  L -> L : changeSessionId() (evita fijación de sesión)
+  L --> Usuario : 302 → /panel (o /portal si es CLIENTE)
+end
+@enduml

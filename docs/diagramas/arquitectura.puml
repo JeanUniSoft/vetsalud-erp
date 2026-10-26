@@ -1,0 +1,38 @@
+@startuml
+!include estilo.iuml
+title Arquitectura en capas de VetSalud ERP (MVC + DAO)
+top to bottom direction
+actor "Usuario por rol\n(recepción, veterinario,\nfarmacia, caja, admin, cliente)" as U
+rectangle "Navegador\n(Chrome / Edge / Firefox)" as NAV
+package "Apache Tomcat 9 · vetsalud-erp.war (JDK 25)" {
+  component "FiltroSeguridad\n(autenticación, rol, CSRF,\ncabeceras, contexto de log)" as F
+  package "Vista (JSP + JSTL)" as V {
+    component "layout/*.jspf\n<módulo>/*.jsp\nfunciones vs:" as JSP
+  }
+  package "Controlador (Servlets)" as C {
+    component "ControladorBase\n+ 1 servlet por módulo" as SV
+  }
+  package "Modelo de negocio (servicios)" as S {
+    component "XxxService\n(reglas, validaciones,\nauditoría)" as SRV
+  }
+  package "Persistencia (DAO)" as D {
+    component "XxxDao (interfaz)" as DAOI
+    component "XxxDaoJdbc\n(PreparedStatement)" as DAOJ
+    component "Db + Jdbc\n(transacción y\nusuario auditado)" as DB
+  }
+  component "Logback\n(auditoria.log, errores.log)" as LOG
+  component "Guava · Commons\n· POI" as LIB
+}
+database "PostgreSQL 18\nvetsalud_erp\n(35 tablas, triggers,\nfunciones, vistas)" as PG
+U --> NAV
+NAV --> F : HTTP(S)
+F --> SV
+SV --> SRV
+SV ..> JSP : forward
+SRV --> DAOI
+DAOI <|.. DAOJ
+DAOJ --> DB
+DB --> PG : JDBC\nrol vetsalud_app
+SRV ..> LOG
+SRV ..> LIB
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+!include estilo.iuml
+title Paquetes de pe.vetsalud.erp y dependencias entre capas
+package "web\n(controladores MVC)" as web
+package "seguridad" as seg
+package "servicio\n(reglas de negocio)" as srv
+package "dao\n(interfaces)" as dao
+package "dao.jdbc\n(implementaciones)" as jdbc
+package "modelo\n(records)" as mod
+package "persistencia\n(Db, Jdbc, ErroresBD)" as per
+package "log\n(Logback)" as log
+package "reporte\n(Apache POI)" as rep
+package "config" as cfg
+web ..> srv
+web ..> seg
+web ..> mod
+seg ..> log
+srv ..> dao
+srv ..> mod
+srv ..> log
+srv ..> rep
+jdbc ..|> dao
+jdbc ..> per
+jdbc ..> mod
+dao ..> mod
+per ..> cfg
+@enduml

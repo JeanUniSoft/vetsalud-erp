@@ -1,0 +1,29 @@
+$ cd db && psql -d postgres -f instalar.sql
+
+== 1/11 Roles, base de datos y esquema
+== 2/11 Tablas, restricciones e índices
+== 3/11 Triggers, funciones y vistas
+== 4/11 Permisos
+== 5/11 Datos de prueba
+== 6/11 Pruebas de reglas de negocio
+   NOTICE: OK RN-01 cliente duplicado bloqueado: duplicate key value violates unique constraint "uq_cliente_documento"
+   NOTICE: OK Dominio DNI inválido bloqueado: new row for relation "cliente" violates check constraint "ck_cliente_dni"
+   NOTICE: OK RN-03 cita solapada bloqueada: conflicting key value violates exclusion constraint "ex_cita_sin_solape"
+   NOTICE: OK RF-12 transición inválida bloqueada: Transición de cita no permitida: ATENDIDA -> EN_ESPERA
+   NOTICE: OK RN-05 consulta firmada protegida: La consulta 1 está firmada; registre una adenda
+   NOTICE: OK RN-05 detalle de consulta firmada protegido: La consulta 1 está firmada; no se puede modificar consulta_diagnostico
+   NOTICE: OK RN-04 firma por no veterinario bloqueada: Solo un médico veterinario activo puede firmar la consulta
+   NOTICE: OK RN-06 stock negativo bloqueado: Stock insuficiente en lote BRV-0925: disponible 6.00, solicitado 10.00
+   NOTICE: OK RN-06 lote vencido bloqueado: El lote DRP-0801 venció el 20/10/2026; no se puede vender
+   NOTICE: OK RN-08 descuento sin autorización bloqueado: new row for relation "venta" violates check constraint "ck_venta_descuento"
+   NOTICE: OK RN-12 pago incompleto bloqueado: Pagos (S/ 50.00) no coinciden con el total (S/ 60.00)
+   NOTICE: OK Kardex inmutable: permission denied for table movimiento_inventario
+   NOTICE: OK Stock solo por kardex (permiso): permission denied for table lote
+   NOTICE: OK RN-07/RN-09 venta T001-00000002 por FEFO y anulada; stock 50.00 -> 50.00
+   NOTICE: OK RN-10 diferencia sin justificar bloqueada: new row for relation "caja_turno" violates check constraint "ck_turno_diferencia_justi
+== 7/11 Vista de stock para reportes (S10)
+== 8/11 Ajustes para la aplicación web (APF3)
+== 9/11 Datos de demostración (APF3)
+== 10/11 Motivo de cancelación en el historial de citas (APF3)
+== 11/11 Descarte de ventas pendientes (APF3)
+== Listo: vetsalud_erp instalada, probada y con datos de demostración

@@ -1,0 +1,153 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Clientes y mascotas (P03)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class ClientesServlet <<controlador>> {
+}
+class FichaClienteServlet <<controlador>> {
+}
+class FotoMascotaServlet <<controlador>> {
+}
+class MascotaModulo  {
+}
+class MascotasServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class ClienteService <<servicio>> {
+  +buscar()
+  +obtener()
+  +registrar()
+  +actualizar()
+}
+class MascotaService <<servicio>> {
+  +buscar()
+  +delCliente()
+  +obtener()
+  +historialPropietarios()
+  +historialCambios()
+  …
+}
+}
+package "DAO (interfaces)" {
+interface CatalogoMascotaDao <<DAO>> {
+  +especies()
+  +razas()
+}
+interface ClienteDao <<DAO>> {
+  +buscar()
+  +buscarPorId()
+  +existeDocumento()
+  +insertar()
+  +actualizar()
+}
+interface MascotaDao <<DAO>> {
+  +buscar()
+  +listarPorCliente()
+  +buscarPorId()
+  +existeMicrochip()
+  +insertar()
+  …
+}
+interface MascotaFotoAlmacen <<DAO>> {
+  +guardar()
+  +ubicar()
+  +eliminar()
+}
+}
+package "DAO JDBC" {
+class CatalogoMascotaDaoJdbc <<JDBC>> {
+  +especies()
+  +razas()
+}
+class ClienteDaoJdbc <<JDBC>> {
+  +buscar()
+  +buscarPorId()
+  +existeDocumento()
+  +insertar()
+  +actualizar()
+}
+class MascotaDaoJdbc <<JDBC>> {
+  +buscar()
+  +listarPorCliente()
+  +buscarPorId()
+  +existeMicrochip()
+  +insertar()
+  …
+}
+}
+package "Modelo" {
+class CambioPropietario <<record>> {
+  idHist
+  idMascota
+  idClienteAnterior
+  clienteAnterior
+  idClienteNuevo
+  clienteNuevo
+  motivo
+  …
+}
+class Cliente <<record>> {
+  idCliente
+  tipoDocumento
+  numDocumento
+  nombres
+  apellidos
+  telefono
+  correo
+  …
+}
+class Especie <<record>> {
+  idEspecie
+  nombre
+}
+class Mascota <<record>> {
+  idMascota
+  idCliente
+  propietario
+  idEspecie
+  especie
+  idRaza
+  raza
+  …
+}
+class MascotaCambio <<record>> {
+  idAuditoria
+  fechaHora
+  usuario
+  operacion
+  campos
+}
+class Raza <<record>> {
+  idRaza
+  idEspecie
+  especie
+  nombre
+}
+}
+class MascotaFotoAlmacenDisco  {
+  +desdeConfiguracion()
+  +guardar()
+  +ubicar()
+  +eliminar()
+}
+CatalogoMascotaDao <|.. CatalogoMascotaDaoJdbc
+ClienteDao <|.. ClienteDaoJdbc
+ClienteService --> ClienteDao
+ClientesServlet --> ClienteService
+MascotaDao <|.. MascotaDaoJdbc
+MascotaFotoAlmacen <|.. MascotaFotoAlmacenDisco
+MascotaModulo --> MascotaFotoAlmacen
+MascotaModulo --> ClienteService
+MascotaModulo --> MascotaService
+MascotaService --> MascotaDao
+MascotaService --> CatalogoMascotaDao
+MascotaService --> ClienteDao
+MascotaService --> MascotaFotoAlmacen
+MascotasServlet --> MascotaService
+@enduml

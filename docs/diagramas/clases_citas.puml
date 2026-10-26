@@ -1,0 +1,165 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Citas y llegada (P04)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class CitasServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class CitaService <<servicio>> {
+  +transicionesDesde()
+  +esTransicionValida()
+  +nombreEstado()
+  +veterinarioPorDefecto()
+  +agenda()
+  …
+}
+}
+package "DAO (interfaces)" {
+interface CitaDao <<DAO>> {
+  +agenda()
+  +buscarPorId()
+  +cruce()
+  +insertar()
+  +reprogramar()
+  …
+}
+interface MascotaClinicaDao <<DAO>> {
+  +buscar()
+  +buscarPorId()
+}
+interface ProfesionalDao <<DAO>> {
+  +veterinarios()
+  +personalClinico()
+  +buscarPorId()
+}
+interface ServicioDao <<DAO>> {
+  +activos()
+  +buscarPorId()
+}
+}
+package "DAO JDBC" {
+class CitaDaoJdbc <<JDBC>> {
+  +agenda()
+  +buscarPorId()
+  +cruce()
+  +insertar()
+  +cambiarEstado()
+  …
+}
+class MascotaClinicaDaoJdbc <<JDBC>> {
+  +buscar()
+  +buscarPorId()
+}
+class ProfesionalDaoJdbc <<JDBC>> {
+  +veterinarios()
+  +personalClinico()
+  +buscarPorId()
+}
+class ServicioDaoJdbc <<JDBC>> {
+  +activos()
+  +buscarPorId()
+}
+}
+package "Modelo" {
+class AgendaDia <<record>> {
+  fecha
+  nombre
+  hoy
+  citas
+}
+class AgendaFiltro <<record>> {
+  fecha
+  vista
+  idVeterinario
+  idServicio
+  estado
+}
+class AgendaVista <<record>> {
+  filtro
+  desde
+  hasta
+  anterior
+  siguiente
+  citas
+  dias
+  …
+}
+class CambioEstadoCita <<record>> {
+  idHist
+  estadoAnterior
+  estadoNuevo
+  motivo
+  usuario
+  nombreUsuario
+  fechaHora
+}
+class Cita <<record>> {
+  idCita
+  idMascota
+  mascota
+  especie
+  alertasMascota
+  idCliente
+  cliente
+  …
+}
+class CitaSolicitud <<record>> {
+  idMascota
+  idServicio
+  idVeterinario
+  inicio
+  motivo
+}
+class ControlProgramado <<record>> {
+  idConsulta
+  fechaControl
+  idMascota
+  mascota
+  especie
+  cliente
+  telefonoCliente
+  …
+}
+class MascotaClinica <<record>> {
+  idMascota
+  nombre
+  especie
+  raza
+  sexo
+  fechaNacimiento
+  pesoKg
+  …
+}
+class Profesional <<record>> {
+  idUsuario
+  nombres
+  apellidos
+  rol
+  colegiatura
+  activo
+}
+class Servicio <<record>> {
+  idServicio
+  nombre
+  tipo
+  duracionMin
+  tarifa
+  activo
+}
+}
+CitaDao <|.. CitaDaoJdbc
+CitaService --> CitaDao
+CitaService --> ServicioDao
+CitaService --> ProfesionalDao
+CitaService --> MascotaClinicaDao
+CitasServlet --> CitaService
+MascotaClinicaDao <|.. MascotaClinicaDaoJdbc
+ProfesionalDao <|.. ProfesionalDaoJdbc
+ServicioDao <|.. ServicioDaoJdbc
+@enduml
