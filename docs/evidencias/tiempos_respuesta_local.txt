@@ -1,0 +1,17 @@
+/panel                                   mediana 0.018  max 0.025
+/clientes                                mediana 0.004  max 0.005
+/clientes?q=Gonzales                     mediana 0.004  max 0.004
+/mascotas                                mediana 0.007  max 0.009
+/citas                                   mediana 0.017  max 0.022
+/citas?vista=semana                      mediana 0.014  max 0.016
+/historia                                mediana 0.008  max 0.009
+/historia/mascota?id=2                   mediana 0.017  max 0.027
+/inventario                              mediana 0.010  max 0.023
+/inventario/kardex                       mediana 0.009  max 0.011
+/ventas                                  mediana 0.008  max 0.009
+/caja                                    mediana 0.006  max 0.007
+/reportes                                mediana 0.023  max 0.025
+/reportes/ventas                         mediana 0.015  max 0.020
+/reportes/inventario?vista=rotacion      mediana 0.013  max 0.013
+/admin/usuarios                          mediana 0.007  max 0.007
+/admin/auditoria                         mediana 0.012  max 0.013

@@ -1,0 +1,10 @@
+<%-- Pestañas de P12 · Administración. Cada página define <c:set var="pestana" value="usuarios"/> antes de incluirlo. --%>
+<nav class="pestanas" aria-label="Secciones de administración">
+  <a class="${pestana == 'usuarios' ? 'activo' : ''}" href="${pageContext.request.contextPath}/admin/usuarios">Usuarios</a>
+  <a class="${pestana == 'roles' ? 'activo' : ''}" href="${pageContext.request.contextPath}/admin/roles">Roles y permisos</a>
+  <a class="${pestana == 'auditoria' ? 'activo' : ''}" href="${pageContext.request.contextPath}/admin/auditoria">Auditoría</a>
+  <a class="${pestana == 'accesos' ? 'activo' : ''}" href="${pageContext.request.contextPath}/admin/accesos">Accesos</a>
+  <a class="${pestana == 'parametros' ? 'activo' : ''}" href="${pageContext.request.contextPath}/admin/parametros">Parámetros</a>
+  <a class="${pestana == 'alertas' ? 'activo' : ''}" href="${pageContext.request.contextPath}/admin/alertas">Alertas</a>
+  <a class="${pestana == 'recordatorios' ? 'activo' : ''}" href="${pageContext.request.contextPath}/admin/recordatorios">Recordatorios</a>
+</nav>

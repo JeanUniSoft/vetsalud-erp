@@ -1,0 +1,8 @@
+<%-- P10 · Navegación entre reportes; conserva el periodo elegido. Requiere ${pestanaReporte} y ${filtro}. --%>
+<c:set var="periodoUrl" value="desde=${filtro.desde}&hasta=${filtro.hasta}"/>
+<nav class="pestanas no-imprimir" aria-label="Reportes disponibles">
+  <a class="${pestanaReporte == 'indice' ? 'activo' : ''}" href="${pageContext.request.contextPath}/reportes?<c:out value='${periodoUrl}'/>">Resumen</a>
+  <a class="${pestanaReporte == 'ventas' ? 'activo' : ''}" href="${pageContext.request.contextPath}/reportes/ventas?<c:out value='${periodoUrl}'/>">Ventas</a>
+  <a class="${pestanaReporte == 'inventario' ? 'activo' : ''}" href="${pageContext.request.contextPath}/reportes/inventario?<c:out value='${periodoUrl}'/>">Inventario</a>
+  <a class="${pestanaReporte == 'clinica' ? 'activo' : ''}" href="${pageContext.request.contextPath}/reportes/clinica?<c:out value='${periodoUrl}'/>">Citas y clínica</a>
+</nav>

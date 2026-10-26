@@ -1,0 +1,187 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Reportes y exportación (P10)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class ExportarReporteServlet <<controlador>> {
+}
+class ReportesServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class ExportadorCsv <<servicio>> {
+  +formato()
+  +tipoContenido()
+  +extension()
+  +exportar()
+}
+class ExportadorExcel <<servicio>> {
+  +formato()
+  +tipoContenido()
+  +extension()
+  +exportar()
+}
+interface ExportadorReporte <<servicio>> {
+  +formato()
+  +tipoContenido()
+  +extension()
+}
+class ReportesService <<servicio>> {
+  +hoy()
+  +ahora()
+  +filtro()
+  +construir()
+  +kpis()
+  …
+}
+}
+package "DAO (interfaces)" {
+interface ReporteDao <<DAO>> {
+  +ventasAgrupadas()
+  +resumenVentas()
+  +ventasAnuladas()
+  +stockPorLote()
+  +kardex()
+  …
+}
+}
+package "DAO JDBC" {
+class ReporteDaoJdbc <<JDBC>> {
+  +ventasAgrupadas()
+  +resumenVentas()
+  +ventasAnuladas()
+  +stockPorLote()
+  +kardex()
+  …
+}
+}
+package "Modelo" {
+class FilaReporte <<record>> {
+  valores
+}
+class KpiReporte <<record>> {
+  etiqueta
+  valor
+  formato
+  detalle
+  destacado
+}
+class ReporteAtenciones <<record>> {
+  grupo
+  consultas
+  firmadas
+  abiertas
+  mascotas
+}
+class ReporteAusencia <<record>> {
+  inicio
+  mascota
+  servicio
+  profesional
+  estado
+  motivo
+}
+class ReporteBarra <<record>> {
+  etiqueta
+  completo
+  valor
+  porcentaje
+}
+class ReporteCitas <<record>> {
+  grupo
+  total
+  atendidas
+  enCurso
+  programadas
+  canceladas
+  noAsistio
+}
+class ReporteClinicaResumen <<record>> {
+  citas
+  atendidas
+  ausencias
+  consultas
+  procedimientos
+}
+class ReporteColumna <<record>> {
+  titulo
+  tipo
+}
+class ReporteFiltro <<record>> {
+  desde
+  hasta
+  vista
+  agrupacion
+  producto
+  dias
+}
+class ReporteGrafico <<record>> {
+  titulo
+  tipo
+  barras
+  categorias
+}
+class ReporteGrupo <<record>> {
+  grupo
+  registros
+  cantidad
+  monto
+}
+class ReporteKardex <<record>> {
+  fecha
+  codigo
+  producto
+  lote
+  vencimiento
+  tipo
+  entrada
+  …
+}
+class ReporteRotacion <<record>> {
+  codigo
+  producto
+  categoria
+  unidad
+  vendidas
+  stock
+}
+class ReporteTabla <<record>> {
+  codigo
+  titulo
+  filtros
+  columnas
+  filas
+  totales
+  notas
+  …
+}
+class ReporteVentaAnulada <<record>> {
+  comprobante
+  fecha
+  cajero
+  total
+  motivo
+  anuladaEn
+}
+class ReporteVentasResumen <<record>> {
+  confirmadas
+  total
+  subtotal
+  descuentos
+  servicios
+  productos
+  anuladas
+  …
+}
+}
+ExportadorReporte <|.. ExportadorCsv
+ExportadorReporte <|.. ExportadorExcel
+ExportarReporteServlet --> ReportesService
+ReporteDao <|.. ReporteDaoJdbc
+ReportesService --> ReporteDao
+ReportesServlet --> ReportesService
+@enduml

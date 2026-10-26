@@ -1,0 +1,219 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Inventario por lotes (P07)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class InventarioMovimientosServlet <<controlador>> {
+}
+class InventarioServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class InventarioService <<servicio>> {
+  +registrarIngreso()
+  +ingresosRecientes()
+  +registrarAjuste()
+  +ajustesRecientes()
+  +kardex()
+  …
+}
+class ProductoService <<servicio>> {
+  +diasPorVencer()
+  +buscar()
+  +activos()
+  +obtener()
+  +lotes()
+  …
+}
+}
+package "DAO (interfaces)" {
+interface CatalogoInventarioDao <<DAO>> {
+  +categorias()
+  +existeCategoria()
+  +insertarCategoria()
+  +renombrarCategoria()
+  +proveedores()
+  …
+}
+interface IngresoDao <<DAO>> {
+  +existeDocumento()
+  +lotePorCodigo()
+  +registrar()
+  +recientes()
+}
+interface KardexDao <<DAO>> {
+  +movimientos()
+  +ajustesRecientes()
+  +conciliacion()
+  +registrarAjuste()
+  +alertas()
+  …
+}
+interface ProductoDao <<DAO>> {
+  +buscar()
+  +buscarPorId()
+  +existeCodigo()
+  +insertar()
+  +actualizar()
+  …
+}
+}
+package "DAO JDBC" {
+class CatalogoInventarioDaoJdbc <<JDBC>> {
+  +categorias()
+  +existeCategoria()
+  +insertarCategoria()
+  +renombrarCategoria()
+  +proveedores()
+  …
+}
+class IngresoDaoJdbc <<JDBC>> {
+  +existeDocumento()
+  +lotePorCodigo()
+  +registrar()
+  +recientes()
+}
+class KardexDaoJdbc <<JDBC>> {
+  +movimientos()
+  +ajustesRecientes()
+  +conciliacion()
+  +registrarAjuste()
+  +alertas()
+  …
+}
+class ProductoDaoJdbc <<JDBC>> {
+  +buscar()
+  +buscarPorId()
+  +existeCodigo()
+  +insertar()
+  +actualizar()
+  …
+}
+}
+package "Modelo" {
+class AjusteInventario <<record>> {
+  idLote
+  tipo
+  cantidad
+  motivo
+  evidencia
+}
+class Categoria <<record>> {
+  idCategoria
+  nombre
+  numProductos
+}
+class IngresoDocumento <<record>> {
+  idProveedor
+  tipoDoc
+  numDoc
+  fecha
+  lineas
+}
+class IngresoResumen <<record>> {
+  idIngreso
+  proveedor
+  tipoDoc
+  numDoc
+  fecha
+  usuario
+  lineas
+  …
+}
+class KardexFiltro <<record>> {
+  idProducto
+  idLote
+  desde
+  hasta
+}
+class LineaIngreso <<record>> {
+  idProducto
+  codigoLote
+  fechaVencimiento
+  cantidad
+  costoUnitario
+}
+class Lote <<record>> {
+  idLote
+  idProducto
+  codigoLote
+  fechaVencimiento
+  costoUnitario
+  stockActual
+  condicion
+}
+class LoteAlerta <<record>> {
+  idProducto
+  codigo
+  producto
+  alerta
+  stock
+  vence
+  lotes
+  …
+}
+class LoteConciliacion <<record>> {
+  idLote
+  codigoLote
+  fechaVencimiento
+  stockActual
+  saldoKardex
+}
+class LoteStock <<record>> {
+  codigo
+  producto
+  categoria
+  unidad
+  codigoLote
+  vencimiento
+  stock
+  …
+}
+class MovimientoKardex <<record>> {
+  idMovimiento
+  codigo
+  producto
+  codigoLote
+  fechaVencimiento
+  fechaHora
+  tipo
+  …
+}
+class Producto <<record>> {
+  idProducto
+  idCategoria
+  categoria
+  codigo
+  nombre
+  unidad
+  precioVenta
+  …
+}
+class Proveedor <<record>> {
+  idProveedor
+  ruc
+  razonSocial
+  telefono
+  correo
+  activo
+}
+}
+CatalogoInventarioDao <|.. CatalogoInventarioDaoJdbc
+IngresoDao <|.. IngresoDaoJdbc
+InventarioMovimientosServlet --> ProductoService
+InventarioMovimientosServlet --> InventarioService
+InventarioService --> IngresoDao
+InventarioService --> KardexDao
+InventarioService --> ProductoDao
+InventarioService --> CatalogoInventarioDao
+InventarioServlet --> ProductoService
+InventarioServlet --> InventarioService
+KardexDao <|.. KardexDaoJdbc
+ProductoDao <|.. ProductoDaoJdbc
+ProductoService --> ProductoDao
+ProductoService --> CatalogoInventarioDao
+@enduml

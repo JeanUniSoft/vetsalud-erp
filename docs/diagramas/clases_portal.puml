@@ -1,0 +1,121 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Portal del cliente y recordatorios (P11)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class PortalServlet <<controlador>> {
+}
+class RecordatorioPlanificador  {
+  +contextInitialized()
+  +contextDestroyed()
+}
+class RecordatoriosServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class PortalService <<servicio>> {
+  +mascotas()
+  +mascota()
+  +proximasCitas()
+  +controles()
+  +recordatorios()
+}
+class RecordatorioService <<servicio>> {
+  +Resultado()
+  +Programacion()
+  +listar()
+  +resumen()
+  +programar()
+  …
+}
+}
+package "DAO (interfaces)" {
+interface PortalDao <<DAO>> {
+  +mascotas()
+  +mascota()
+  +citasDesde()
+  +controlesDesde()
+  +recordatorios()
+}
+interface RecordatorioDao <<DAO>> {
+  +listar()
+  +resumen()
+  +pendientes()
+  +cambiarEstado()
+  +programarCitas()
+  …
+}
+}
+package "DAO JDBC" {
+class PortalDaoJdbc <<JDBC>> {
+  +mascotas()
+  +mascota()
+  +citasDesde()
+  +controlesDesde()
+  +recordatorios()
+}
+class RecordatorioDaoJdbc <<JDBC>> {
+  +listar()
+  +resumen()
+  +pendientes()
+  +cambiarEstado()
+  +programarCitas()
+  …
+}
+}
+package "Modelo" {
+class PortalCita <<record>> {
+  idCita
+  idMascota
+  mascota
+  inicio
+  servicio
+  profesional
+  estado
+}
+class PortalControl <<record>> {
+  idConsulta
+  idMascota
+  mascota
+  fechaControl
+  profesional
+}
+class Recordatorio <<record>> {
+  idRecordatorio
+  idCliente
+  cliente
+  correo
+  aceptaRecordatorios
+  clienteActivo
+  idCita
+  …
+}
+class RecordatorioResumen <<record>> {
+  pendientesVencidos
+  pendientesFuturos
+  enviados
+  fallidos
+  cancelados
+}
+}
+interface NotificadorCorreo  {
+  +enviar()
+}
+class NotificadorCorreoLog  {
+  +enviar()
+}
+class NotificadorException  {
+}
+NotificadorCorreo <|.. NotificadorCorreoLog
+PortalDao <|.. PortalDaoJdbc
+PortalService --> PortalDao
+PortalServlet --> PortalService
+RecordatorioDao <|.. RecordatorioDaoJdbc
+RecordatorioService --> RecordatorioDao
+RecordatorioService --> NotificadorCorreo
+RecordatoriosServlet --> RecordatorioService
+@enduml

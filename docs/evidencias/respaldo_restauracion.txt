@@ -1,0 +1,8 @@
+CREATE DATABASE
+SET
+clientes|10
+mascotas|13
+ventas|4
+auditoria|67
+lotes con stock distinto al kardex|0
+Restauración validada en vetsalud_erp_restaurada

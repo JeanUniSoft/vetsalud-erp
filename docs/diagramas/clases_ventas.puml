@@ -1,0 +1,170 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Venta, pago y caja (P08, P09)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class CajaServlet <<controlador>> {
+}
+class VentasServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class AutorizacionDescuento <<servicio>> {
+  +autorizar()
+}
+class CajaService <<servicio>> {
+  +turnoAbierto()
+  +obtener()
+  +resumen()
+  +abrir()
+  +cerrar()
+  …
+}
+class VentaService <<servicio>> {
+  +turnoAbierto()
+  +listar()
+  +ventasDeTurno()
+  +obtener()
+  +comprobante()
+  …
+}
+}
+package "DAO (interfaces)" {
+interface CajaDao <<DAO>> {
+  +turnoAbierto()
+  +buscarPorId()
+  +abrir()
+  +resumen()
+  +cerrar()
+  …
+}
+interface VentaPosDao <<DAO>> {
+  +crear()
+  +buscarPorId()
+  +listar()
+  +lineas()
+  +pagos()
+  …
+}
+}
+package "DAO JDBC" {
+class CajaDaoJdbc <<JDBC>> {
+  +turnoAbierto()
+  +buscarPorId()
+  +abrir()
+  +resumen()
+  +cerrar()
+  …
+}
+class VentaPosDaoJdbc <<JDBC>> {
+  +crear()
+  +buscarPorId()
+  +listar()
+  +lineas()
+  +pagos()
+  …
+}
+}
+package "Modelo" {
+class Comprobante <<record>> {
+  venta
+  lineas
+  pagos
+}
+class ConsultaPorCobrar <<record>> {
+  idConsulta
+  fechaHora
+  idMascota
+  mascota
+  idCliente
+  cliente
+  veterinario
+  …
+}
+class LineaVenta <<record>> {
+  idDetalle
+  idServicio
+  idLote
+  idProducto
+  codigoProducto
+  descripcion
+  codigoLote
+  …
+}
+class MascotaVenta <<record>> {
+  idMascota
+  nombre
+  especie
+  raza
+}
+class Pago <<record>> {
+  idPago
+  idVenta
+  medio
+  monto
+  referencia
+  fechaHora
+}
+class ResumenTurno <<record>> {
+  turno
+  medios
+  ventasConfirmadas
+  totalConfirmado
+  descuentos
+  ventasAnuladas
+  totalAnulado
+  …
+}
+class ServicioVendible <<record>> {
+  idServicio
+  nombre
+  tipo
+  tarifa
+}
+class TurnoCaja <<record>> {
+  idTurno
+  idCajero
+  cajero
+  apertura
+  montoInicial
+  cierre
+  efectivoEsperado
+  …
+}
+class Venta <<record>> {
+  idVenta
+  idTurno
+  idCajero
+  cajero
+  turnoAbierto
+  idCliente
+  cliente
+  …
+}
+class VentaFiltro <<record>> {
+  desde
+  hasta
+  estado
+  idCajero
+  idTurno
+}
+class VentaTotales <<record>> {
+  subtotal
+  descuento
+  idAutoriza
+}
+}
+CajaDao <|.. CajaDaoJdbc
+CajaService --> CajaDao
+CajaServlet --> CajaService
+CajaServlet --> VentaService
+VentaPosDao <|.. VentaPosDaoJdbc
+VentaService --> VentaPosDao
+VentaService --> CajaDao
+VentaService --> AutorizacionDescuento
+VentasServlet --> VentaService
+@enduml

@@ -1,0 +1,20 @@
+<%-- Botones de exportación (RF-36): conservan todos los filtros. Requiere ${tipoReporte} y ${filtro}.
+     Solo se muestran con el permiso REPORTE_EXPORTAR (el servidor lo vuelve a verificar). --%>
+<div class="acciones-exportar no-imprimir">
+  <c:if test="${sesion.puede('REPORTE_EXPORTAR')}">
+    <c:forEach var="fmt" items="${['csv', 'xlsx']}">
+      <c:url var="urlExportar" value="/reportes/exportar">
+        <c:param name="tipo" value="${tipoReporte}"/>
+        <c:param name="formato" value="${fmt}"/>
+        <c:param name="desde" value="${filtro.desde}"/>
+        <c:param name="hasta" value="${filtro.hasta}"/>
+        <c:if test="${not empty filtro.vista}"><c:param name="vista" value="${filtro.vista}"/></c:if>
+        <c:if test="${not empty filtro.agrupacion}"><c:param name="agrupacion" value="${filtro.agrupacion}"/></c:if>
+        <c:if test="${not empty filtro.producto}"><c:param name="producto" value="${filtro.producto}"/></c:if>
+        <c:param name="dias" value="${filtro.dias}"/>
+      </c:url>
+      <a class="btn ${fmt == 'csv' ? 'btn-secundario' : 'btn-primario'} btn-chico" href="<c:out value='${urlExportar}'/>">${fmt == 'csv' ? 'Exportar CSV' : 'Exportar Excel'}</a>
+    </c:forEach>
+  </c:if>
+  <button type="button" class="btn btn-secundario btn-chico" data-imprimir>Imprimir</button>
+</div>

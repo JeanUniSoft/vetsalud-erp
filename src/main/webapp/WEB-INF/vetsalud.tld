@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+  <tlib-version>1.0</tlib-version>
+  <short-name>vs</short-name>
+  <uri>http://vetsalud.pe/funciones</uri>
+  <function><name>fecha</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String fecha(java.lang.Object)</function-signature></function>
+  <function><name>fechaHora</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String fechaHora(java.time.LocalDateTime)</function-signature></function>
+  <function><name>hora</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String hora(java.lang.Object)</function-signature></function>
+  <function><name>inputFechaHora</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String inputFechaHora(java.time.LocalDateTime)</function-signature></function>
+  <function><name>soles</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String soles(java.math.BigDecimal)</function-signature></function>
+  <function><name>numero</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String numero(java.math.BigDecimal)</function-signature></function>
+  <function><name>enmascarar</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String enmascarar(java.lang.String)</function-signature></function>
+  <function><name>etiqueta</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String etiqueta(java.lang.String)</function-signature></function>
+  <function><name>claseEstado</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String claseEstado(java.lang.String)</function-signature></function>
+  <function><name>edad</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>java.lang.String edad(java.time.LocalDate)</function-signature></function>
+  <function><name>contiene</name><function-class>pe.vetsalud.erp.web.FuncionesVista</function-class><function-signature>boolean contiene(java.util.Collection, java.lang.Object)</function-signature></function>
+</taglib>

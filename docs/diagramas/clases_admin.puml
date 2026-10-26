@@ -1,0 +1,169 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Usuarios, roles y auditoría (P12)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class AdminAccesosServlet <<controlador>> {
+}
+class AdminAlertasServlet <<controlador>> {
+}
+class AdminAuditoriaServlet <<controlador>> {
+}
+class AdminParametrosServlet <<controlador>> {
+}
+class AdminRolesServlet <<controlador>> {
+}
+class AdminUsuariosServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class AdminParametroService <<servicio>> {
+  +todos()
+  +actualizar()
+}
+class AdminUsuarioService <<servicio>> {
+  +listar()
+  +obtener()
+  +roles()
+  +clientesSinUsuario()
+  +crear()
+  …
+}
+class AuditoriaConsultaService <<servicio>> {
+  +periodo()
+  +buscar()
+  +obtener()
+  +cambios()
+  +diferencias()
+  …
+}
+class GeneradorClaveTemporal <<servicio>> {
+  +generar()
+}
+class RolPermisoService <<servicio>> {
+  +roles()
+  +matriz()
+  +guardar()
+}
+}
+package "DAO (interfaces)" {
+interface AuditoriaConsultaDao <<DAO>> {
+  +buscar()
+  +buscarPorId()
+  +valores()
+  +tablas()
+  +usuarios()
+  …
+}
+interface RolPermisoDao <<DAO>> {
+  +roles()
+  +matriz()
+}
+interface UsuarioAdminDao <<DAO>> {
+  +listar()
+  +buscarPorId()
+  +existeUsuario()
+  +existeCorreo()
+  +roles()
+  …
+}
+}
+package "DAO JDBC" {
+class AuditoriaConsultaDaoJdbc <<JDBC>> {
+  +buscar()
+  +buscarPorId()
+  +valores()
+  +tablas()
+  +usuarios()
+  …
+}
+class RolPermisoDaoJdbc <<JDBC>> {
+  +roles()
+  +matriz()
+  +aplicar()
+}
+class UsuarioAdminDaoJdbc <<JDBC>> {
+  +listar()
+  +buscarPorId()
+  +existeUsuario()
+  +existeCorreo()
+  +roles()
+  …
+}
+}
+package "Modelo" {
+class AccesoRegistro <<record>> {
+  idAcceso
+  fechaHora
+  usuarioIngresado
+  idUsuario
+  nombre
+  rol
+  ip
+  …
+}
+class AdminCredencial <<record>> {
+  idUsuario
+  usuario
+  claveTemporal
+  motivo
+}
+class AuditoriaRegistro <<record>> {
+  idAuditoria
+  fechaHora
+  idUsuario
+  usuario
+  tabla
+  idRegistro
+  operacion
+  …
+}
+class CambioCampo <<record>> {
+  campo
+  antes
+  despues
+  tipo
+}
+class PermisoFila <<record>> {
+  idPermiso
+  codigo
+  modulo
+  descripcion
+  roles
+}
+class RolResumen <<record>> {
+  idRol
+  nombre
+  descripcion
+  activo
+  usuarios
+  permisos
+}
+class UsuarioAdmin <<record>> {
+  idUsuario
+  rol
+  nombres
+  apellidos
+  usuario
+  correo
+  colegiatura
+  …
+}
+}
+AdminAccesosServlet --> AuditoriaConsultaService
+AdminAuditoriaServlet --> AuditoriaConsultaService
+AdminParametrosServlet --> AdminParametroService
+AdminRolesServlet --> RolPermisoService
+AdminUsuarioService --> UsuarioAdminDao
+AdminUsuarioService --> GeneradorClaveTemporal
+AdminUsuariosServlet --> AdminUsuarioService
+AuditoriaConsultaDao <|.. AuditoriaConsultaDaoJdbc
+AuditoriaConsultaService --> AuditoriaConsultaDao
+RolPermisoDao <|.. RolPermisoDaoJdbc
+RolPermisoService --> RolPermisoDao
+UsuarioAdminDao <|.. UsuarioAdminDaoJdbc
+@enduml

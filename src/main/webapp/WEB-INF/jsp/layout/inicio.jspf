@@ -1,0 +1,59 @@
+<%-- Plantilla común (cabecera + menú por rol). Antes de incluirla, la página define:
+     <c:set var="titulo" value="..."/>  y  <c:set var="seccion" value="clientes"/> --%>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><c:out value="${titulo}"/> · VetSalud ERP</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/app.css">
+  <c:if test="${not empty cssExtra}"><link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/${cssExtra}.css"></c:if>
+  <link rel="icon" href="${pageContext.request.contextPath}/static/img/logo.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="app">
+  <aside class="menu" aria-label="Menú principal">
+    <a class="marca" href="${pageContext.request.contextPath}/">
+      <img src="${pageContext.request.contextPath}/static/img/logo.svg" alt="" width="34" height="34">
+      <span><strong>VetSalud</strong> ERP</span>
+    </a>
+    <nav>
+      <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+      <c:if test="${sesion.accede('/panel')}"><a class="${seccion == 'panel' ? 'activo' : ''}" href="${ctx}/panel"><span class="ico ico-panel"></span>Panel principal</a></c:if>
+      <c:if test="${sesion.accede('/clientes')}"><a class="${seccion == 'clientes' ? 'activo' : ''}" href="${ctx}/clientes"><span class="ico ico-clientes"></span>Clientes y mascotas</a></c:if>
+      <c:if test="${sesion.accede('/citas')}"><a class="${seccion == 'citas' ? 'activo' : ''}" href="${ctx}/citas"><span class="ico ico-citas"></span>Agenda de citas</a></c:if>
+      <c:if test="${sesion.accede('/historia')}"><a class="${seccion == 'historia' ? 'activo' : ''}" href="${ctx}/historia"><span class="ico ico-historia"></span>Historia clínica</a></c:if>
+      <c:if test="${sesion.accede('/inventario')}"><a class="${seccion == 'inventario' ? 'activo' : ''}" href="${ctx}/inventario"><span class="ico ico-inventario"></span>Inventario</a></c:if>
+      <c:if test="${sesion.accede('/ventas')}"><a class="${seccion == 'ventas' ? 'activo' : ''}" href="${ctx}/ventas"><span class="ico ico-ventas"></span>Ventas y pagos</a></c:if>
+      <c:if test="${sesion.accede('/caja')}"><a class="${seccion == 'caja' ? 'activo' : ''}" href="${ctx}/caja"><span class="ico ico-caja"></span>Caja</a></c:if>
+      <c:if test="${sesion.accede('/reportes')}"><a class="${seccion == 'reportes' ? 'activo' : ''}" href="${ctx}/reportes"><span class="ico ico-reportes"></span>Reportes</a></c:if>
+      <c:if test="${sesion.accede('/admin')}"><a class="${seccion == 'admin' ? 'activo' : ''}" href="${ctx}/admin/usuarios"><span class="ico ico-admin"></span>Usuarios y auditoría</a></c:if>
+      <c:if test="${sesion.accede('/portal')}"><a class="${seccion == 'portal' ? 'activo' : ''}" href="${ctx}/portal"><span class="ico ico-portal"></span>Mis mascotas</a></c:if>
+      <c:if test="${sesion.accede('/alertas')}"><a class="${seccion == 'alertas' ? 'activo' : ''}" href="${ctx}/alertas"><span class="ico ico-alertas"></span>Alertas</a></c:if>
+    </nav>
+    <div class="menu-pie">
+      <a class="${seccion == 'cuenta' ? 'activo' : ''}" href="${ctx}/cuenta"><span class="ico ico-cuenta"></span>Mi cuenta</a>
+      <form method="post" action="${ctx}/logout">
+        <input type="hidden" name="_csrf" value="${sessionScope.csrf}">
+        <button type="submit" class="enlace-salir"><span class="ico ico-salir"></span>Cerrar sesión</button>
+      </form>
+    </div>
+  </aside>
+  <div class="contenido">
+    <header class="barra-superior">
+      <h1><c:out value="${titulo}"/></h1>
+      <div class="usuario-actual">
+        <span class="avatar" aria-hidden="true"><c:out value="${sesion.iniciales}"/></span>
+        <span>
+          <strong><c:out value="${sesion.nombreCompleto}"/></strong>
+          <small><c:out value="${vs:etiqueta(sesion.rol)}"/></small>
+        </span>
+      </div>
+    </header>
+    <main class="pagina">
+      <c:if test="${not empty flash}">
+        <div class="aviso aviso-${flash.tipo}" role="${flash.tipo == 'error' ? 'alert' : 'status'}">
+          <strong>${flash.tipo == 'error' ? 'No se pudo completar:' : (flash.tipo == 'exito' ? 'Listo:' : 'Aviso:')}</strong>
+          <c:out value="${flash.mensaje}"/>
+        </div>
+      </c:if>

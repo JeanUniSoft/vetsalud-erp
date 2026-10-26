@@ -1,0 +1,197 @@
+@startuml
+!include estilo.iuml
+title Diagrama de clases · Acceso, seguridad y panel (P01, P02)
+hide empty members
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+left to right direction
+hide <<record>> members
+package "Controlador (web)" {
+class AlertasServlet <<controlador>> {
+}
+class CuentaServlet <<controlador>> {
+}
+class LoginServlet <<controlador>> {
+}
+class LogoutServlet <<controlador>> {
+}
+class PanelServlet <<controlador>> {
+}
+class RecuperarClaveServlet <<controlador>> {
+}
+}
+package "Servicio" {
+class AlertaService <<servicio>> {
+  +pendientes()
+  +recientes()
+  +crear()
+  +atender()
+}
+class AutenticacionService <<servicio>> {
+  +autenticar()
+  +cambiarClave()
+  +solicitarRecuperacion()
+}
+class PanelService <<servicio>> {
+  +resumen()
+  +agenda()
+  +ventasSemana()
+  +alertasInventario()
+}
+class ParametroService <<servicio>> {
+  +entero()
+  +todos()
+  +actualizar()
+}
+}
+package "DAO (interfaces)" {
+interface AlertaDao <<DAO>> {
+  +crear()
+  +pendientesPorRol()
+  +recientes()
+  +atender()
+}
+interface PanelDao <<DAO>> {
+  +resumen()
+  +citasDelDia()
+  +ventasPorDia()
+  +alertasInventario()
+}
+interface ParametroDao <<DAO>> {
+  +valor()
+  +todos()
+  +actualizar()
+}
+interface UsuarioDao <<DAO>> {
+  +buscarPorUsuario()
+  +buscarPorId()
+  +permisosDeRol()
+  +clienteVinculado()
+  +registrarIntento()
+  …
+}
+}
+package "DAO JDBC" {
+class AlertaDaoJdbc <<JDBC>> {
+  +crear()
+  +pendientesPorRol()
+  +recientes()
+  +atender()
+}
+class PanelDaoJdbc <<JDBC>> {
+  +resumen()
+  +citasDelDia()
+  +ventasPorDia()
+  +alertasInventario()
+}
+class ParametroDaoJdbc <<JDBC>> {
+  +valor()
+  +todos()
+  +actualizar()
+}
+class UsuarioDaoJdbc <<JDBC>> {
+  +buscarPorUsuario()
+  +buscarPorId()
+  +buscarPorUsuarioOCorreo()
+  +permisosDeRol()
+  +clienteVinculado()
+  …
+}
+}
+package "Modelo" {
+class Alerta <<record>> {
+  idAlerta
+  rolDestino
+  tipo
+  mensaje
+  creadaEn
+  atendidaPor
+  atendidaEn
+}
+class AlertaInventario <<record>> {
+  codigo
+  producto
+  alerta
+  stock
+  vence
+}
+class CitaPanel <<record>> {
+  idCita
+  inicio
+  mascota
+  especie
+  cliente
+  veterinario
+  servicio
+  …
+}
+class Parametro <<record>> {
+  clave
+  valor
+  descripcion
+  actualizadoEn
+}
+class PuntoSerie <<record>> {
+  dia
+  total
+  altura
+}
+class ResumenPanel <<record>> {
+  citasHoy
+  citasPorAtender
+  citasEnSala
+  citasAtendidas
+  consultasHoy
+  consultasAbiertas
+  ventasHoy
+  …
+}
+class Usuario <<record>> {
+  idUsuario
+  rol
+  nombres
+  apellidos
+  usuario
+  correo
+  claveHash
+  …
+}
+}
+package "Seguridad" {
+class ClaveHasher  {
+  +hashear()
+  +verificar()
+}
+class FiltroSeguridad  {
+}
+class PoliticaAcceso  {
+  +esPublica()
+  +permite()
+  +inicio()
+}
+class PoliticaClave  {
+  +incumplimientos()
+}
+class UsuarioSesion <<record>> {
+  idUsuario
+  usuario
+  nombreCompleto
+  rol
+  permisos
+  idCliente
+  debeCambiarClave
+}
+}
+AlertaDao <|.. AlertaDaoJdbc
+AlertaService --> AlertaDao
+AutenticacionService --> UsuarioDao
+AutenticacionService --> AlertaDao
+AutenticacionService --> ClaveHasher
+AutenticacionService --> ParametroService
+PanelDao <|.. PanelDaoJdbc
+PanelService --> PanelDao
+PanelServlet --> PanelService
+ParametroDao <|.. ParametroDaoJdbc
+ParametroService --> ParametroDao
+UsuarioDao <|.. UsuarioDaoJdbc
+@enduml

@@ -1,0 +1,60 @@
+/* =====================================================================
+   P08 / P09 · Punto de venta, comprobante y caja (complemento de app.css; sin estilos en línea: CSP)
+   ===================================================================== */
+.solo-lector { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* ---------- punto de venta: líneas a la izquierda, resumen a la derecha ---------- */
+.pos { display: grid; grid-template-columns: minmax(0, 1.85fr) minmax(300px, 1fr); gap: 18px; align-items: start; }
+.pos-resumen { position: sticky; top: 16px; }
+.pos-cabecera { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+.pos-cabecera .datos { display: flex; gap: 6px 18px; flex-wrap: wrap; font-size: .9rem; color: var(--texto-suave); }
+.pos-cabecera .datos strong { color: var(--texto); }
+.resumen-filas { margin: 0; display: grid; gap: 6px; }
+.resumen-fila { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.resumen-fila dt { color: var(--texto-suave); }
+.resumen-fila dd { margin: 0; font-variant-numeric: tabular-nums; }
+.resumen-total { border-top: 2px solid var(--borde); margin-top: 6px; padding-top: 10px; }
+.resumen-total dt { color: var(--texto); font-weight: 700; }
+.saldo-pendiente { color: var(--error); font-weight: 700; }
+.saldo-cubierto { color: var(--ok); font-weight: 700; }
+.form-fila { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+.form-fila .campo { flex: 1; min-width: 150px; }
+.form-fila .campo.chico { flex: 0 0 105px; min-width: 90px; }
+.autorizacion { border: 1px dashed #c4d0d7; border-radius: 8px; padding: 10px 12px 12px; margin: 0; display: grid; gap: 10px; }
+.autorizacion legend { font-size: .82rem; font-weight: 600; color: var(--texto-suave); padding: 0 4px; }
+.lista-opciones { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.lista-opciones label { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--borde); border-radius: 8px; font-weight: 500; cursor: pointer; flex-wrap: wrap; }
+.lista-opciones label:hover { background: #f8fafb; }
+.btn-bloque { width: 100%; }
+.pagos-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pagos-lista li { display: flex; justify-content: space-between; gap: 8px; align-items: center; border-bottom: 1px solid var(--borde); padding-bottom: 6px; }
+.tipo-linea { font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; color: var(--texto-suave); }
+
+/* ---------- comprobante imprimible ---------- */
+.comprobante { max-width: 470px; margin: 0 auto; font-variant-numeric: tabular-nums; }
+.comprobante-cabecera { text-align: center; border-bottom: 1px dashed #9aa9b2; padding-bottom: 12px; margin-bottom: 12px; }
+.comprobante-cabecera h2 { margin: 0 0 2px; font-size: 1.15rem; }
+.comprobante-cabecera p { margin: 0; font-size: .85rem; color: var(--texto-suave); }
+.comprobante-numero { font-size: 1.25rem; font-weight: 700; letter-spacing: .05em; margin-top: 10px; color: var(--texto); }
+.comprobante .ficha { grid-template-columns: 110px 1fr; font-size: .88rem; }
+.comprobante .tabla { font-size: .88rem; }
+.comprobante .tabla td, .comprobante .tabla th { padding: 6px 4px; }
+.comprobante-totales { border-top: 1px dashed #9aa9b2; margin-top: 10px; padding-top: 10px; }
+.comprobante-pie { text-align: center; font-size: .8rem; color: var(--texto-suave); border-top: 1px dashed #9aa9b2; margin-top: 14px; padding-top: 10px; }
+.sello-anulado { border: 3px solid var(--error); color: var(--error); text-align: center; font-weight: 800; font-size: 1.35rem; letter-spacing: .3em; padding: 6px; margin: 10px 0; border-radius: 8px; }
+
+/* ---------- caja ---------- */
+.kpi .valor.valor-medio { font-size: 1.5rem; }
+.cuadre { display: grid; gap: 6px; margin: 0; }
+.cuadre div { display: flex; justify-content: space-between; gap: 12px; }
+.cuadre dt { color: var(--texto-suave); }
+.cuadre dd { margin: 0; font-variant-numeric: tabular-nums; }
+.cuadre .total { border-top: 2px solid var(--borde); padding-top: 8px; font-weight: 700; }
+.cuadre .total dt { color: var(--texto); }
+
+@media (max-width: 1000px) { .pos { grid-template-columns: 1fr; } .pos-resumen { position: static; } }
+@media print {
+  .comprobante { max-width: none; }
+  .comprobante .tabla th { background: none; }
+  .sello-anulado { border-color: #000; color: #000; }
+}

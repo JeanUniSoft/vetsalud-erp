@@ -1,0 +1,23 @@
+@startuml
+!include estilo.iuml
+title Diagrama de despliegue
+node "Equipo del usuario" {
+  artifact "Navegador web" as nav
+}
+node "Servidor de aplicaciones (Linux / Windows)" {
+  node "JDK 25 (Temurin)" {
+    node "Apache Tomcat 9" {
+      artifact "vetsalud-erp.war" as war
+    }
+  }
+  folder "logs/\nvetsalud.log · errores.log · auditoria.log" as logs
+  folder "vetsalud-fotos/" as fotos
+}
+node "Servidor de base de datos" {
+  database "PostgreSQL 18\nBD vetsalud_erp · esquema vetsalud" as pg
+}
+nav --> war : HTTPS (RNF-04)\ncookie HttpOnly, SameSite=Strict
+war --> pg : JDBC 42.7\nrol vetsalud_app (privilegio mínimo)\nrol vetsalud_reportes (solo lectura)
+war --> logs : Logback (rotación diaria)
+war --> fotos : fotos de mascotas
+@enduml

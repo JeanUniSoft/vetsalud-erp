@@ -1,0 +1,10 @@
+<%-- Pestañas de P07 · Inventario. Cada página define <c:set var="pestana" value="catalogo"/> antes de incluirlo. --%>
+<nav class="pestanas no-imprimir" aria-label="Secciones de inventario">
+  <a class="${pestana == 'catalogo' ? 'activo' : ''}" ${pestana == 'catalogo' ? 'aria-current="page"' : ''} href="${pageContext.request.contextPath}/inventario">Catálogo</a>
+  <a class="${pestana == 'ingreso' ? 'activo' : ''}" ${pestana == 'ingreso' ? 'aria-current="page"' : ''} href="${pageContext.request.contextPath}/inventario/ingreso">Ingresos</a>
+  <a class="${pestana == 'ajuste' ? 'activo' : ''}" ${pestana == 'ajuste' ? 'aria-current="page"' : ''} href="${pageContext.request.contextPath}/inventario/ajuste">Ajustes</a>
+  <a class="${pestana == 'kardex' ? 'activo' : ''}" ${pestana == 'kardex' ? 'aria-current="page"' : ''} href="${pageContext.request.contextPath}/inventario/kardex">Kardex</a>
+  <a class="${pestana == 'alertas' ? 'activo' : ''}" ${pestana == 'alertas' ? 'aria-current="page"' : ''} href="${pageContext.request.contextPath}/inventario/alertas">Alertas</a>
+  <a class="${pestana == 'categorias' ? 'activo' : ''}" ${pestana == 'categorias' ? 'aria-current="page"' : ''} href="${pageContext.request.contextPath}/inventario/categorias">Categorías</a>
+  <a class="${pestana == 'proveedores' ? 'activo' : ''}" ${pestana == 'proveedores' ? 'aria-current="page"' : ''} href="${pageContext.request.contextPath}/inventario/proveedores">Proveedores</a>
+</nav>
