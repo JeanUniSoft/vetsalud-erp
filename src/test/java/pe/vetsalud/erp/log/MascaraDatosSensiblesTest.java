@@ -25,6 +25,14 @@ class MascaraDatosSensiblesTest {
     }
 
     @Test
+    void s13NeutralizaSaltosDeLineaParaEvitarFalsificarEventos() {
+        String ataque = "usuario=a\r\n2026-01-01|rparedes|operacion=FORJA";
+        String limpio = MascaraDatosSensibles.enmascarar(ataque);
+        assertFalse(limpio.contains("\n"), limpio);
+        assertFalse(limpio.contains("\r"), limpio);
+    }
+
+    @Test
     void noAlteraFechasNiImportes() {
         String texto = "Venta 2026-09-18 por S/ 183.00, 7 lotes en 45 ms";
         assertEquals(texto, MascaraDatosSensibles.enmascarar(texto));

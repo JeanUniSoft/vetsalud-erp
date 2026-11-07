@@ -106,4 +106,25 @@ class AutenticacionServiceTest {
         assertTrue(alertas.creadas.get(0).startsWith("ADMINISTRADOR|OTRO|"));
         assertFalse(alertas.creadas.get(0).contains("VetSalud2026"));
     }
+
+    // ---------------------------------------------------------------- S13: pruebas de seguridad (SEG-13, SEG-42)
+
+    @Test
+    @DisplayName("S13: con clave errada, una cuenta bloqueada recibe el mismo mensaje que una inexistente")
+    void bloqueadaSinRevelar() {
+        for (int i = 0; i < 5; i++) {
+            assertThrows(ReglaNegocioException.class, () -> servicio.autenticar("cmendoza", "mala", "127.0.0.1"));
+        }
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
+                () -> servicio.autenticar("cmendoza", "otra-mala", "127.0.0.1"));
+        assertEquals(AutenticacionService.MENSAJE_CREDENCIALES, e.getMessage());
+    }
+
+    @Test
+    @DisplayName("S13: un usuario más largo que la columna (40) recibe el mensaje genérico")
+    void usuarioDemasiadoLargo() {
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
+                () -> servicio.autenticar("x".repeat(41), CLAVE, "127.0.0.1"));
+        assertEquals(AutenticacionService.MENSAJE_CREDENCIALES, e.getMessage());
+    }
 }

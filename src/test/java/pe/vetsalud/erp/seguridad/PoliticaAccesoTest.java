@@ -47,4 +47,29 @@ class PoliticaAccesoTest {
         assertFalse(PoliticaClave.incumplimientos("Jperez#2026", "jperez").isEmpty());
         assertTrue(PoliticaClave.incumplimientos("Clinica#2026", "jperez").isEmpty());
     }
+
+    // ---------------------------------------------------------------- S13: pruebas de seguridad (hallazgo SEG-03/SEG-04)
+
+    @Test
+    @DisplayName("S13: las rutas comunes exigen coincidencia exacta; /cuenta/../admin no es /cuenta")
+    void rutaComunManipulada() {
+        for (String ruta : List.of("/cuenta/../admin/usuarios", "/cuenta/..;/admin/usuarios", "/logout/../reportes",
+                "/sin-permiso/../admin/auditoria", "/cuentax")) {
+            assertFalse(PoliticaAcceso.permite("CLIENTE", ruta), ruta);
+        }
+        assertTrue(PoliticaAcceso.permite("CLIENTE", "/cuenta"));
+    }
+
+    @Test
+    @DisplayName("S13: una ruta con .. nunca es pública aunque empiece por /static/ o /login")
+    void rutaPublicaManipulada() {
+        for (String ruta : List.of("/static/../admin/usuarios", "/static/..;/admin/usuarios", "/login/../panel",
+                "/loginx", "/recuperar/x", "/favicon.ico/../admin")) {
+            assertFalse(PoliticaAcceso.esPublica(ruta), ruta);
+        }
+        assertTrue(PoliticaAcceso.esPublica("/login"));
+        assertTrue(PoliticaAcceso.esPublica("/recuperar"));
+        assertTrue(PoliticaAcceso.esPublica("/favicon.ico"));
+        assertTrue(PoliticaAcceso.esPublica("/static/img/logo.svg"));
+    }
 }
