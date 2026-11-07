@@ -30,6 +30,10 @@
 
   <!-- Nunca se muestran trazas al usuario (RNF-16) -->
   <error-page>
+    <error-code>400</error-code>
+    <location>/WEB-INF/jsp/error/no-encontrado.jsp</location>
+  </error-page>
+  <error-page>
     <error-code>403</error-code>
     <location>/WEB-INF/jsp/error/sin-permiso.jsp</location>
   </error-page>

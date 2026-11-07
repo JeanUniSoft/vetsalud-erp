@@ -5,6 +5,7 @@ import java.nio.file.Files;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.catalina.valves.ErrorReportValve;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
@@ -46,6 +47,13 @@ public final class Servidor {
         recursos.addPreResources(new DirResourceSet(recursos, "/WEB-INF/classes",
                 new File(clases).getAbsolutePath(), "/"));
         ctx.setResources(recursos);
+
+        // S13 (SEG-34): las páginas de error del contenedor no revelan la versión de Tomcat ni trazas.
+        // En el Tomcat 9 de producción se configura igual en server.xml (ErrorReportValve).
+        ErrorReportValve errores = new ErrorReportValve();
+        errores.setShowReport(false);
+        errores.setShowServerInfo(false);
+        tomcat.getHost().getPipeline().addValve(errores);
 
         tomcat.start();
         LOG.info("VetSalud ERP disponible en http://localhost:{}", puerto);
