@@ -12,6 +12,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
  */
 public class MascaraDatosSensibles extends ClassicConverter {
 
+    /** S13 (SEG-28): un salto de línea en un dato del usuario permitiría falsificar eventos en el log. */
+    private static final Pattern SALTO_DE_LINEA = Pattern.compile("[\\r\\n\\u0085\\u2028\\u2029]");
     private static final Pattern CLAVE =
             Pattern.compile("(?i)\\b(password|clave|contrase[ñn]a|token)(\\s*[=:]\\s*)\\S+");
     private static final Pattern CORREO =
@@ -29,7 +31,8 @@ public class MascaraDatosSensibles extends ClassicConverter {
         if (texto == null || texto.isEmpty()) {
             return texto;
         }
-        String r = CLAVE.matcher(texto).replaceAll("$1$2******");
+        String r = SALTO_DE_LINEA.matcher(texto).replaceAll("_");
+        r = CLAVE.matcher(r).replaceAll("$1$2******");
         r = CORREO.matcher(r).replaceAll("$1***$2");
         r = RUC.matcher(r).replaceAll("$1*******$2");
         r = CELULAR.matcher(r).replaceAll("9*****$1");
