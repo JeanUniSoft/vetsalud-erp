@@ -1,0 +1,15 @@
+OK RN-01 cliente duplicado bloqueado: duplicate key value violates unique constraint "uq_cliente_documento"
+OK Dominio DNI inválido bloqueado: new row for relation "cliente" violates check constraint "ck_cliente_dni"
+OK RN-03 cita solapada bloqueada: conflicting key value violates exclusion constraint "ex_cita_sin_solape"
+OK RF-12 transición inválida bloqueada: Transición de cita no permitida: ATENDIDA -> EN_ESPERA
+OK RN-05 consulta firmada protegida: La consulta 1 está firmada; registre una adenda
+OK RN-05 detalle de consulta firmada protegido: La consulta 1 está firmada; no se puede modificar consulta_diagnostico
+OK RN-04 firma por no veterinario bloqueada: Solo un médico veterinario activo puede firmar la consulta
+OK RN-06 stock negativo bloqueado: Stock insuficiente en lote BRV-0925: disponible 6.00, solicitado 10.00
+OK RN-06 lote vencido bloqueado: El lote DRP-0801 venció el 01/11/2026; no se puede vender
+OK RN-08 descuento sin autorización bloqueado: new row for relation "venta" violates check constraint "ck_venta_descuento"
+OK RN-12 pago incompleto bloqueado: Pagos (S/ 50.00) no coinciden con el total (S/ 60.00)
+OK Kardex inmutable: permission denied for table movimiento_inventario
+OK Stock solo por kardex (permiso): permission denied for table lote
+OK RN-07/RN-09 venta T001-00000002 por FEFO y anulada; stock 50.00 -> 50.00
+OK RN-10 diferencia sin justificar bloqueada: new row for relation "caja_turno" violates check constraint "ck_turno_diferencia_justificada"

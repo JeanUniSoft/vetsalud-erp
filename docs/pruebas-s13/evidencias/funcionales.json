@@ -1,0 +1,138 @@
+[
+ {
+  "id": "FUN-01",
+  "mod": "P01",
+  "nombre": "Los 8 usuarios entran y llegan a su pantalla inicial",
+  "tecnica": "Partición de equivalencias",
+  "ok": true,
+  "obs": "8/8 correctos"
+ },
+ {
+  "id": "FUN-02",
+  "mod": "P02–P12",
+  "nombre": "Humo: las pantallas del administrador cargan",
+  "tecnica": "Prueba de humo",
+  "ok": true,
+  "obs": "28 pantallas, HTTP distinto de 200: []"
+ },
+ {
+  "id": "FUN-03",
+  "mod": "Filtro",
+  "nombre": "Recursos públicos y raíz siguen funcionando con el filtro corregido",
+  "tecnica": "Regresión",
+  "ok": true,
+  "obs": "/ → 302 /login; css 200; logo 200"
+ },
+ {
+  "id": "FUN-04",
+  "mod": "Filtro",
+  "nombre": "Con sesión, la raíz abre el panel",
+  "tecnica": "Regresión",
+  "ok": true,
+  "obs": "HTTP 200"
+ },
+ {
+  "id": "FUN-05",
+  "mod": "P03",
+  "nombre": "Registrar un cliente con datos válidos",
+  "tecnica": "Partición de equivalencias",
+  "ok": true,
+  "obs": "['Listo: Cliente registrado correctamente.']"
+ },
+ {
+  "id": "FUN-06",
+  "mod": "P03",
+  "nombre": "RN-01: el mismo documento se rechaza",
+  "tecnica": "Tabla de decisión",
+  "ok": true,
+  "obs": "['No se pudo completar: Ya existe un cliente con DNI 43132866 (RN-01).']"
+ },
+ {
+  "id": "FUN-07",
+  "mod": "P03",
+  "nombre": "DNI inválido (7 dígitos) se rechaza",
+  "tecnica": "Valores límite",
+  "ok": true,
+  "obs": "['No se pudo completar: El DNI debe tener 8 dígitos.']"
+ },
+ {
+  "id": "FUN-08",
+  "mod": "P03",
+  "nombre": "DNI inválido (9 dígitos) se rechaza",
+  "tecnica": "Valores límite",
+  "ok": true,
+  "obs": "['No se pudo completar: El DNI debe tener 8 dígitos.']"
+ },
+ {
+  "id": "FUN-09",
+  "mod": "P03",
+  "nombre": "DNI inválido (con letras) se rechaza",
+  "tecnica": "Valores límite",
+  "ok": true,
+  "obs": "['No se pudo completar: El DNI debe tener 8 dígitos.']"
+ },
+ {
+  "id": "FUN-10",
+  "mod": "P04",
+  "nombre": "Una cita en un horario libre se registra",
+  "tecnica": "Tabla de decisión",
+  "ok": true,
+  "obs": "['Listo: Cita N.° 13 programada: Rocky · Consulta general el 30/11/2026 de 10:00 a 10:30 con M.V. Carlos Mendoza Ríos.']"
+ },
+ {
+  "id": "FUN-11",
+  "mod": "P04",
+  "nombre": "RN-03: otra cita que cruza al mismo veterinario se rechaza",
+  "tecnica": "Tabla de decisión",
+  "ok": true,
+  "obs": "['No se pudo completar: M.V. Carlos Mendoza Ríos ya tiene una cita de 10:00 a 10:30 (Rocky). Elija otro horario (RN-03).']"
+ },
+ {
+  "id": "FUN-12",
+  "mod": "P10",
+  "nombre": "Reporte Excel de inventario (Apache POI) se descarga",
+  "tecnica": "Regresión",
+  "ok": true,
+  "obs": "HTTP 200, 7773 bytes, firma b'PK', tipo application/vnd.openxmlformats-officedoc"
+ },
+ {
+  "id": "FUN-13",
+  "mod": "P11",
+  "nombre": "El cliente ve sus mascotas en el portal",
+  "tecnica": "Regresión",
+  "ok": true,
+  "obs": "HTTP 200"
+ },
+ {
+  "id": "FUN-14",
+  "mod": "P03",
+  "nombre": "RF-08: subir y volver a ver la foto de una mascota",
+  "tecnica": "Regresión",
+  "ok": true,
+  "obs": "['Listo: Fotografía actualizada.']; GET foto HTTP 200 image/png"
+ },
+ {
+  "id": "FUN-15",
+  "mod": "P01",
+  "nombre": "Cuenta bloqueada: con la clave correcta se informa el bloqueo; con otra, mensaje genérico",
+  "tecnica": "Transición de estados",
+  "ok": true,
+  "obs": "errada=['Usuario o contraseña incorrectos.']; correcta=['La cuenta está bloqueada por intentos fallidos. Solicite el restablecimiento al administrador.']"
+ },
+ {
+  "id": "FUN-16",
+  "mod": "P12",
+  "nombre": "Tras el desbloqueo, la cuenta vuelve a entrar",
+  "tecnica": "Transición de estados",
+  "ok": true,
+  "obs": "Desbloqueo aplicado en la tabla usuario"
+ },
+ {
+  "id": "FUN-17",
+  "mod": "P01",
+  "nombre": "Cerrar sesión lleva al login con aviso",
+  "tecnica": "Regresión",
+  "ok": true,
+  "obs": "/login?salida=1"
+ }
+]

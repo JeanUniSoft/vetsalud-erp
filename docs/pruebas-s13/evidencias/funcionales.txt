@@ -1,0 +1,36 @@
+PASA  FUN-01 Los 8 usuarios entran y llegan a su pantalla inicial
+      8/8 correctos
+PASA  FUN-02 Humo: las pantallas del administrador cargan
+      28 pantallas, HTTP distinto de 200: []
+PASA  FUN-03 Recursos públicos y raíz siguen funcionando con el filtro corregido
+      / → 302 /login; css 200; logo 200
+PASA  FUN-04 Con sesión, la raíz abre el panel
+      HTTP 200
+PASA  FUN-05 Registrar un cliente con datos válidos
+      ['Listo: Cliente registrado correctamente.']
+PASA  FUN-06 RN-01: el mismo documento se rechaza
+      ['No se pudo completar: Ya existe un cliente con DNI 43132866 (RN-01).']
+PASA  FUN-07 DNI inválido (7 dígitos) se rechaza
+      ['No se pudo completar: El DNI debe tener 8 dígitos.']
+PASA  FUN-08 DNI inválido (9 dígitos) se rechaza
+      ['No se pudo completar: El DNI debe tener 8 dígitos.']
+PASA  FUN-09 DNI inválido (con letras) se rechaza
+      ['No se pudo completar: El DNI debe tener 8 dígitos.']
+PASA  FUN-10 Una cita en un horario libre se registra
+      ['Listo: Cita N.° 13 programada: Rocky · Consulta general el 30/11/2026 de 10:00 a 10:30 con M.V. Carlos Mendoza Ríos.']
+PASA  FUN-11 RN-03: otra cita que cruza al mismo veterinario se rechaza
+      ['No se pudo completar: M.V. Carlos Mendoza Ríos ya tiene una cita de 10:00 a 10:30 (Rocky). Elija otro horario (RN-03).']
+PASA  FUN-12 Reporte Excel de inventario (Apache POI) se descarga
+      HTTP 200, 7773 bytes, firma b'PK', tipo application/vnd.openxmlformats-officedoc
+PASA  FUN-13 El cliente ve sus mascotas en el portal
+      HTTP 200
+PASA  FUN-14 RF-08: subir y volver a ver la foto de una mascota
+      ['Listo: Fotografía actualizada.']; GET foto HTTP 200 image/png
+PASA  FUN-15 Cuenta bloqueada: con la clave correcta se informa el bloqueo; con otra, mensaje genérico
+      errada=['Usuario o contraseña incorrectos.']; correcta=['La cuenta está bloqueada por intentos fallidos. Solicite el restablecimiento al administrador.']
+PASA  FUN-16 Tras el desbloqueo, la cuenta vuelve a entrar
+      Desbloqueo aplicado en la tabla usuario
+PASA  FUN-17 Cerrar sesión lleva al login con aviso
+      /login?salida=1
+
+TOTAL 17 casos · 17 pasan · 0 fallan

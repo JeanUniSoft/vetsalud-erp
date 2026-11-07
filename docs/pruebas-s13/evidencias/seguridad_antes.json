@@ -1,0 +1,338 @@
+[
+ {
+  "id": "SEG-01",
+  "cat": "A01",
+  "nombre": "Matriz rol × ruta (7 roles × 14 rutas) coincide con PoliticaAcceso",
+  "ok": true,
+  "obs": "98 combinaciones, 0 diferencias []",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-02",
+  "cat": "A01",
+  "nombre": "Sin sesión, toda ruta privada redirige al login",
+  "ok": true,
+  "obs": "14 rutas probadas, 0 sin redirigir []",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-03",
+  "cat": "A01",
+  "nombre": "Sin sesión, una ruta manipulada (..;, %2e%2e) no alcanza servlets privados",
+  "ok": false,
+  "obs": "(ruta, HTTP, muestra usuarios reales)=[('/static/..;/admin/usuarios', 200, True), ('/static/%2e%2e/admin/usuarios', 200, True), ('/static/../admin/usuarios', 200, True), ('/login/..;/admin/usuarios', 200, True), ('/favicon.ico/..;/admin/usuarios', 200, True), ('/recuperar/..;/admin/usuarios', 200, True)]",
+  "sev": "Crítica"
+ },
+ {
+  "id": "SEG-04",
+  "cat": "A01",
+  "nombre": "Un CLIENTE no entra a pantallas de administrador manipulando la ruta",
+  "ok": false,
+  "obs": "[('/static/..;/admin/usuarios', 200), ('/cuenta/..;/admin/usuarios', 200), ('/cuenta/../admin/usuarios', 200), ('/logout/%2e%2e/admin/usuarios', 200), ('/sin-permiso/..;/admin/auditoria', 200), ('/cuenta/..;/reportes', 200)]; con datos de administrador: ['/static/..;/admin/usuarios', '/cuenta/..;/admin/usuarios', '/cuenta/../admin/usuarios', '/logout/%2e%2e/admin/usuarios', '/sin-permiso/..;/admin/auditoria', '/cuenta/..;/reportes']",
+  "sev": "Crítica"
+ },
+ {
+  "id": "SEG-05",
+  "cat": "A01",
+  "nombre": "Un CLIENTE no agrega adendas a una historia clínica por ruta manipulada",
+  "ok": true,
+  "obs": "HTTP 302; adendas de la consulta 1: 0 → 0",
+  "sev": "Crítica"
+ },
+ {
+  "id": "SEG-43",
+  "cat": "A01",
+  "nombre": "Un CLIENTE no modifica una consulta abierta por ruta manipulada",
+  "ok": true,
+  "obs": "consulta 5: HTTP 302; motivo en BD=«Motivo original»",
+  "sev": "Crítica"
+ },
+ {
+  "id": "SEG-06",
+  "cat": "A01",
+  "nombre": "Variantes de mayúsculas, barras y parámetros no evaden el rol",
+  "ok": true,
+  "obs": "[('/ADMIN/usuarios', 403), ('/admin%2fusuarios', 400), ('//admin/usuarios', 403), ('/admin/usuarios/', 403), ('/admin/usuarios;x=1', 403)]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-07",
+  "cat": "A01",
+  "nombre": "IDOR: un cliente no ve mascotas ni fotos de otro cliente",
+  "ok": true,
+  "obs": "mascotas ajenas (id, ficha, foto)=[(1, 403, 403), (3, 403, 403), (5, 403, 403), (6, 403, 403)]; propia id=2 HTTP 200",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-08",
+  "cat": "A01",
+  "nombre": "Permiso de acción: un TÉCNICO no puede firmar una consulta",
+  "ok": true,
+  "obs": "HTTP 302 → ['No se pudo completar: Su rol no tiene el permiso CONSULTA_FIRMAR para esta acción.']",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-09",
+  "cat": "A05",
+  "nombre": "Archivos internos (WEB-INF, properties) no se descargan",
+  "ok": true,
+  "obs": "[('/WEB-INF/web.xml', 404), ('/WEB-INF/classes/vetsalud.properties', 404), ('/META-INF/MANIFEST.MF', 404), ('/static/../WEB-INF/web.xml', 404), ('/vetsalud.properties', 302)]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-10",
+  "cat": "A07",
+  "nombre": "Mismo mensaje para clave errada y usuario inexistente",
+  "ok": true,
+  "obs": "['Usuario o contraseña incorrectos.'] / ['Usuario o contraseña incorrectos.']",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-11",
+  "cat": "A07",
+  "nombre": "El tiempo de respuesta no delata si la cuenta existe",
+  "ok": false,
+  "obs": "mediana cuenta existente 35 ms · inexistente 6 ms",
+  "sev": "Media"
+ },
+ {
+  "id": "SEG-12",
+  "cat": "A07",
+  "nombre": "Bloqueo tras 5 intentos: ni la clave correcta entra",
+  "ok": true,
+  "obs": "BD (bloqueado|intentos)=t|5; clave correcta → HTTP 200",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-13",
+  "cat": "A07",
+  "nombre": "Una cuenta bloqueada no se distingue de una inexistente",
+  "ok": false,
+  "obs": "Con clave errada: ['La cuenta está bloqueada por intentos fallidos. Solicite el restablecimiento al administrador.']",
+  "sev": "Baja"
+ },
+ {
+  "id": "SEG-14",
+  "cat": "A03",
+  "nombre": "Inyección SQL en el login no autentica",
+  "ok": true,
+  "obs": "5 cargas, HTTP [200, 200, 200, 200, 200]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-15",
+  "cat": "A07",
+  "nombre": "Fijación de sesión: el id cambia al autenticarse",
+  "ok": true,
+  "obs": "25F70046… → B52D1DBF…",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-16",
+  "cat": "A07",
+  "nombre": "Tras cerrar sesión, la cookie anterior ya no sirve",
+  "ok": true,
+  "obs": "HTTP 302 → /login",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-17",
+  "cat": "A05",
+  "nombre": "Cookie de sesión con HttpOnly y SameSite=Strict",
+  "ok": true,
+  "obs": "JSESSIONID=…; Path=/; HttpOnly; SameSite=Strict",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-18",
+  "cat": "A02",
+  "nombre": "Cookie con Secure y cabecera HSTS (requiere HTTPS)",
+  "ok": false,
+  "obs": "Servidor de laboratorio solo con HTTP: sin Secure ni HSTS",
+  "sev": "Media"
+ },
+ {
+  "id": "SEG-19",
+  "cat": "A02",
+  "nombre": "Claves con hash PBKDF2 y sal única (misma clave, hash distinto)",
+  "ok": true,
+  "obs": "(PBKDF2|total|hash distintos)=8|8|8",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-20",
+  "cat": "A01",
+  "nombre": "POST sin token CSRF se rechaza",
+  "ok": true,
+  "obs": "HTTP 403",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-21",
+  "cat": "A01",
+  "nombre": "Token CSRF de otra sesión se rechaza",
+  "ok": true,
+  "obs": "HTTP 403",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-22",
+  "cat": "A01",
+  "nombre": "Las peticiones rechazadas no dejaron datos",
+  "ok": true,
+  "obs": "filas creadas=0",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-23",
+  "cat": "A03",
+  "nombre": "Inyección SQL en la búsqueda de clientes no devuelve datos ni errores",
+  "ok": true,
+  "obs": "(HTTP, error SQL visible, filas)=[(200, False, 0), (200, False, 0), (200, False, 0), (200, False, 0), (200, False, 0)]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-24",
+  "cat": "A03",
+  "nombre": "La tabla usuario sigue existiendo tras la carga DROP TABLE",
+  "ok": true,
+  "obs": "existe=1",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-25",
+  "cat": "A03",
+  "nombre": "Otros filtros (auditoría, reportes, citas, inventario, historia, ventas) resisten SQLi",
+  "ok": true,
+  "obs": "[('/admin/auditoria', 200, False), ('/admin/auditoria', 200, False), ('/reportes/ventas', 200, False), ('/citas', 200, False), ('/inventario', 200, False), ('/historia', 200, False), ('/ventas', 200, False)]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-26",
+  "cat": "A03",
+  "nombre": "XSS almacenado: el nombre malicioso se muestra escapado en ficha, lista y edición",
+  "ok": true,
+  "obs": "cliente 13; vistas=[200, 200, 200]; con HTML sin escapar=0; ejemplo: ['&lt;script&gt;alert(1)&lt;/script&gt;']",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-27",
+  "cat": "A03",
+  "nombre": "XSS reflejado: los parámetros no se devuelven sin escapar",
+  "ok": true,
+  "obs": "9 puntos; reflejados crudos=[]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-28",
+  "cat": "A09",
+  "nombre": "Inyección en logs: un usuario con salto de línea no falsifica eventos de auditoría",
+  "ok": false,
+  "obs": "líneas falsificadas en logs=1; ejemplo=['2026-01-01|rparedes|operacion=FORJA motivo=inexistente']",
+  "sev": "Media"
+ },
+ {
+  "id": "SEG-42",
+  "cat": "A09",
+  "nombre": "Un usuario de 300 caracteres recibe el mensaje genérico, sin error de BD",
+  "ok": false,
+  "obs": "HTTP 200; ['El servicio no está disponible en este momento. Intente nuevamente.']",
+  "sev": "Baja"
+ },
+ {
+  "id": "SEG-29",
+  "cat": "A09",
+  "nombre": "Las contraseñas de prueba no aparecen en los logs",
+  "ok": true,
+  "obs": "635 líneas revisadas",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-30",
+  "cat": "A09",
+  "nombre": "Los intentos de acceso quedan registrados en acceso_log",
+  "ok": true,
+  "obs": "registros=64, fallidos=30",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-31",
+  "cat": "A05",
+  "nombre": "Cabeceras de seguridad presentes",
+  "ok": true,
+  "obs": "{'x-content-type-options': 'nosniff', 'x-frame-options': 'DENY', 'content-security-policy': \"default-src 'self'; img-src 'self' data:; style-src 'self'; \", 'referrer-policy': 'same-origin'}",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-32",
+  "cat": "A05",
+  "nombre": "CSP sin 'unsafe-inline' ni 'unsafe-eval'",
+  "ok": true,
+  "obs": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; form-action 'self'; frame-ancestors 'none'",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-33",
+  "cat": "A04",
+  "nombre": "Páginas autenticadas no se guardan en caché",
+  "ok": true,
+  "obs": "Cache-Control=no-store",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-34",
+  "cat": "A05",
+  "nombre": "Los errores no muestran trazas, versiones ni rutas internas",
+  "ok": false,
+  "obs": "HTTP [302, 400, 200, 200, 200]; con fuga=[400]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-35",
+  "cat": "A05",
+  "nombre": "La cabecera Server no revela la versión",
+  "ok": true,
+  "obs": "Server=(ausente)",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-36",
+  "cat": "A05",
+  "nombre": "TRACE, PUT y DELETE no están habilitados",
+  "ok": true,
+  "obs": "[('TRACE', 405), ('PUT', 405), ('DELETE', 405), ('OPTIONS', 200)]",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-37",
+  "cat": "A04",
+  "nombre": "Carga de archivos: solo JPG/PNG reales de hasta 2 MB (control: un PNG válido sí entra)",
+  "ok": true,
+  "obs": "rechazos={'shell.jsp': 'No se pudo completar: Solo se aceptan fotografías JPG o PNG.', 'falso.png (HTML)': 'No se pudo completar: El archivo no es una imagen PNG válida: su conte', 'foto.svg': 'No se pudo completar: Solo se aceptan fotografías JPG o PNG.', 'png.jsp (firma PNG)': 'No se pudo completar: Solo se aceptan fotografías JPG o PNG.', '3 MB': 'No se pudo completar: La fotografía supera el tamaño máximo de 2 MB.', '../../evil.png': 'Listo: Fotografía actualizada.'}; PNG válido=['Listo: Fotografía actualizada.']",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-38",
+  "cat": "A01",
+  "nombre": "Nombre de archivo con ../ no escapa de la carpeta de fotos",
+  "ok": true,
+  "obs": "foto_ruta guardada=mascotas/m1-40d8c172-d2d1-4767-970f-23357b9098be.png",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-39",
+  "cat": "A01",
+  "nombre": "El rol vetsalud_app no puede borrar tablas ni alterar auditoría/kardex",
+  "ok": true,
+  "obs": "{'DROP TABLE': 'ERROR:  must be owner of table venta', 'UPDATE auditoría': 'ERROR:  permission denied for table auditoria', 'DELETE kardex': 'ERROR:  permission denied for table movimiento_inventario', 'DELETE usuario': 'ERROR:  permission denied for table usuario', 'CREATE ROLE': 'ERROR:  permission denied to create role', 'TRUNCATE': 'ERROR:  permission denied for table acceso_log'}",
+  "sev": "—"
+ },
+ {
+  "id": "SEG-40",
+  "cat": "A07",
+  "nombre": "Una clave débil (\"123\") se rechaza al cambiarla",
+  "ok": true,
+  "obs": "['No se pudo completar: La nueva contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, incluir una letra minúscula, incluir un símbolo (por ejemplo ! # $ % *).']; la clave original sigue vigente=True",
+  "sev": "—"
+ }
+]

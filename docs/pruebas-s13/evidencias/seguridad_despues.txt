@@ -1,0 +1,86 @@
+PASA  SEG-01 [A01] Matriz rol × ruta (7 roles × 14 rutas) coincide con PoliticaAcceso
+      98 combinaciones, 0 diferencias []
+PASA  SEG-02 [A01] Sin sesión, toda ruta privada redirige al login
+      14 rutas probadas, 0 sin redirigir []
+PASA  SEG-03 [A01] Sin sesión, una ruta manipulada (..;, %2e%2e) no alcanza servlets privados
+      (ruta, HTTP, muestra usuarios reales)=[('/static/..;/admin/usuarios', 400, False), ('/static/%2e%2e/admin/usuarios', 400, False), ('/static/../admin/usuarios', 400, False), ('/login/..;/admin/usuarios', 400, False), ('/favicon.ico/..;/admin/usuarios', 400, False), ('/recuperar/..;/admin/usuarios', 4
+PASA  SEG-04 [A01] Un CLIENTE no entra a pantallas de administrador manipulando la ruta
+      [('/static/..;/admin/usuarios', 400), ('/cuenta/..;/admin/usuarios', 400), ('/cuenta/../admin/usuarios', 400), ('/logout/%2e%2e/admin/usuarios', 400), ('/sin-permiso/..;/admin/auditoria', 400), ('/cuenta/..;/reportes', 400)]; con datos de administrador: []
+PASA  SEG-05 [A01] Un CLIENTE no agrega adendas a una historia clínica por ruta manipulada
+      HTTP 400; adendas de la consulta 1: 0 → 0
+PASA  SEG-43 [A01] Un CLIENTE no modifica una consulta abierta por ruta manipulada
+      consulta 5: HTTP 400; motivo en BD=«Motivo original»
+PASA  SEG-06 [A01] Variantes de mayúsculas, barras y parámetros no evaden el rol
+      [('/ADMIN/usuarios', 403), ('/admin%2fusuarios', 400), ('//admin/usuarios', 403), ('/admin/usuarios/', 403), ('/admin/usuarios;x=1', 400)]
+PASA  SEG-07 [A01] IDOR: un cliente no ve mascotas ni fotos de otro cliente
+      mascotas ajenas (id, ficha, foto)=[(1, 403, 403), (3, 403, 403), (5, 403, 403), (6, 403, 403)]; propia id=2 HTTP 200
+PASA  SEG-08 [A01] Permiso de acción: un TÉCNICO no puede firmar una consulta
+      HTTP 302 → ['No se pudo completar: Su rol no tiene el permiso CONSULTA_FIRMAR para esta acción.']
+PASA  SEG-09 [A05] Archivos internos (WEB-INF, properties) no se descargan
+      [('/WEB-INF/web.xml', 404), ('/WEB-INF/classes/vetsalud.properties', 404), ('/META-INF/MANIFEST.MF', 404), ('/static/../WEB-INF/web.xml', 404), ('/vetsalud.properties', 302)]
+PASA  SEG-10 [A07] Mismo mensaje para clave errada y usuario inexistente
+      ['Usuario o contraseña incorrectos.'] / ['Usuario o contraseña incorrectos.']
+PASA  SEG-11 [A07] El tiempo de respuesta no delata si la cuenta existe
+      mediana cuenta existente 41 ms · inexistente 28 ms
+PASA  SEG-12 [A07] Bloqueo tras 5 intentos: ni la clave correcta entra
+      BD (bloqueado|intentos)=t|5; clave correcta → HTTP 200
+PASA  SEG-13 [A07] Una cuenta bloqueada no se distingue de una inexistente
+      Con clave errada: ['Usuario o contraseña incorrectos.']
+PASA  SEG-14 [A03] Inyección SQL en el login no autentica
+      5 cargas, HTTP [200, 200, 200, 200, 200]
+PASA  SEG-15 [A07] Fijación de sesión: el id cambia al autenticarse
+      0AFFEF58… → AD21BF3F…
+PASA  SEG-16 [A07] Tras cerrar sesión, la cookie anterior ya no sirve
+      HTTP 302 → /login
+PASA  SEG-17 [A05] Cookie de sesión con HttpOnly y SameSite=Strict
+      JSESSIONID=…; Path=/; HttpOnly; SameSite=Strict
+FALLA SEG-18 [A02] Cookie con Secure y cabecera HSTS (requiere HTTPS)
+      Servidor de laboratorio solo con HTTP: sin Secure ni HSTS
+PASA  SEG-19 [A02] Claves con hash PBKDF2 y sal única (misma clave, hash distinto)
+      (PBKDF2|total|hash distintos)=8|8|8
+PASA  SEG-20 [A01] POST sin token CSRF se rechaza
+      HTTP 403
+PASA  SEG-21 [A01] Token CSRF de otra sesión se rechaza
+      HTTP 403
+PASA  SEG-22 [A01] Las peticiones rechazadas no dejaron datos
+      filas creadas=0
+PASA  SEG-23 [A03] Inyección SQL en la búsqueda de clientes no devuelve datos ni errores
+      (HTTP, error SQL visible, filas)=[(200, False, 0), (200, False, 0), (200, False, 0), (200, False, 0), (200, False, 0)]
+PASA  SEG-24 [A03] La tabla usuario sigue existiendo tras la carga DROP TABLE
+      existe=1
+PASA  SEG-25 [A03] Otros filtros (auditoría, reportes, citas, inventario, historia, ventas) resisten SQLi
+      [('/admin/auditoria', 200, False), ('/admin/auditoria', 200, False), ('/reportes/ventas', 200, False), ('/citas', 200, False), ('/inventario', 200, False), ('/historia', 200, False), ('/ventas', 200, False)]
+PASA  SEG-26 [A03] XSS almacenado: el nombre malicioso se muestra escapado en ficha, lista y edición
+      cliente 13; vistas=[200, 200, 200]; con HTML sin escapar=0; ejemplo: ['&lt;script&gt;alert(1)&lt;/script&gt;']
+PASA  SEG-27 [A03] XSS reflejado: los parámetros no se devuelven sin escapar
+      9 puntos; reflejados crudos=[]
+PASA  SEG-28 [A09] Inyección en logs: un usuario con salto de línea no falsifica eventos de auditoría
+      líneas falsificadas en logs=0; ejemplo=[]
+PASA  SEG-42 [A09] Un usuario de 300 caracteres recibe el mensaje genérico, sin error de BD
+      HTTP 200; ['Usuario o contraseña incorrectos.']
+PASA  SEG-29 [A09] Las contraseñas de prueba no aparecen en los logs
+      548 líneas revisadas
+PASA  SEG-30 [A09] Los intentos de acceso quedan registrados en acceso_log
+      registros=66, fallidos=32
+PASA  SEG-31 [A05] Cabeceras de seguridad presentes
+      {'x-content-type-options': 'nosniff', 'x-frame-options': 'DENY', 'content-security-policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; ", 'referrer-policy': 'same-origin'}
+PASA  SEG-32 [A05] CSP sin 'unsafe-inline' ni 'unsafe-eval'
+      default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; form-action 'self'; frame-ancestors 'none'
+PASA  SEG-33 [A04] Páginas autenticadas no se guardan en caché
+      Cache-Control=no-store
+PASA  SEG-34 [A05] Los errores no muestran trazas, versiones ni rutas internas
+      HTTP [302, 400, 200, 200, 400]; con fuga=[]
+PASA  SEG-35 [A05] La cabecera Server no revela la versión
+      Server=(ausente)
+PASA  SEG-36 [A05] TRACE, PUT y DELETE no están habilitados
+      [('TRACE', 405), ('PUT', 405), ('DELETE', 405), ('OPTIONS', 200)]
+PASA  SEG-37 [A04] Carga de archivos: solo JPG/PNG reales de hasta 2 MB (control: un PNG válido sí entra)
+      rechazos={'shell.jsp': 'No se pudo completar: Solo se aceptan fotografías JPG o PNG.', 'falso.png (HTML)': 'No se pudo completar: El archivo no es una imagen PNG válida: su conte', 'foto.svg': 'No se pudo completar: Solo se aceptan fotografías JPG o PNG.', 'png.jsp (firma PNG)': 'No se pudo completa
+PASA  SEG-38 [A01] Nombre de archivo con ../ no escapa de la carpeta de fotos
+      foto_ruta guardada=mascotas/m1-44f870f7-eadc-49f6-ad44-7bfe7577b3a7.png
+PASA  SEG-39 [A01] El rol vetsalud_app no puede borrar tablas ni alterar auditoría/kardex
+      {'DROP TABLE': 'ERROR:  must be owner of table venta', 'UPDATE auditoría': 'ERROR:  permission denied for table auditoria', 'DELETE kardex': 'ERROR:  permission denied for table movimiento_inventario', 'DELETE usuario': 'ERROR:  permission denied for table usuario', 'CREATE ROLE': 'ERROR:  permissio
+PASA  SEG-40 [A07] Una clave débil ("123") se rechaza al cambiarla
+      ['No se pudo completar: La nueva contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, incluir una letra minúscula, incluir un símbolo (por ejemplo ! # $ % *).']; la clave original sigue vigente=True
+
+TOTAL 42 casos · 41 pasan · 1 fallan

@@ -1,0 +1,1 @@
+[{"id": "SEG-41", "cat": "A07", "nombre": "La sesión caduca por inactividad (parámetro MINUTOS_SESION=1, espera de 65 s)", "ok": true, "obs": "activa HTTP 200; tras 65 s HTTP 302 → /login", "sev": "—"}]

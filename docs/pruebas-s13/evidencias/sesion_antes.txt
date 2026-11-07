@@ -1,0 +1,1 @@
+PASA  SEG-41 sesión activa HTTP 200; tras 65 s inactiva HTTP 302 → /login
