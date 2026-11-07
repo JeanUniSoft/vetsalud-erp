@@ -45,10 +45,14 @@ public class FiltroSeguridad extends HttpFilter {
         res.setCharacterEncoding("UTF-8");
         cabecerasDeSeguridad(res);
 
-        String ruta = StringUtils.removeStart(req.getRequestURI(), req.getContextPath());
-        if (ruta.isEmpty() || ruta.equals("/")) {
-            ruta = "/panel";
+        // S13 (SEG-03, SEG-04): getRequestURI() conserva "..", ";" y "%2e" sin normalizar, pero el contenedor sí los
+        // resuelve al elegir el servlet. Se rechazan esas formas y se decide con la ruta que realmente se va a ejecutar.
+        if (uriManipulada(req.getRequestURI())) {
+            LOG.warn("Solicitud rechazada por ruta manipulada: {}", req.getRequestURI());
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
+        String ruta = rutaCanonica(req);
 
         HttpSession sesion = req.getSession(true);
         asegurarTokenCsrf(sesion);
@@ -91,6 +95,19 @@ public class FiltroSeguridad extends HttpFilter {
             req.setAttribute("idSolicitud", ctx.idSolicitud());
             chain.doFilter(req, res);
         }
+    }
+
+    /** Ruta resuelta por el contenedor (servlet + información adicional), no el texto enviado por el cliente. */
+    static String rutaCanonica(HttpServletRequest req) {
+        String ruta = StringUtils.defaultString(req.getServletPath()) + StringUtils.defaultString(req.getPathInfo());
+        return ruta.isEmpty() || ruta.equals("/") ? "/panel" : ruta;
+    }
+
+    /** Recorridos de directorio, parámetros de ruta y sus formas codificadas: ninguna URL legítima del ERP los usa. */
+    static boolean uriManipulada(String uri) {
+        String u = StringUtils.defaultString(uri).toLowerCase(java.util.Locale.ROOT);
+        return u.contains("..") || u.contains(";") || u.contains("\\")
+                || u.contains("%2e") || u.contains("%2f") || u.contains("%5c") || u.contains("%3b") || u.contains("%00");
     }
 
     private static void cabecerasDeSeguridad(HttpServletResponse res) {

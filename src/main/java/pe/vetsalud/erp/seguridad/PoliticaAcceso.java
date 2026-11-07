@@ -25,8 +25,11 @@ public final class PoliticaAcceso {
     private static final Set<String> PERSONAL =
             ImmutableSet.of(ADMINISTRADOR, RECEPCION, VETERINARIO, TECNICO, FARMACIA, CAJERO);
 
-    /** Rutas que no requieren sesión. */
-    public static final Set<String> PUBLICAS = ImmutableSet.of("/login", "/recuperar", "/static/", "/favicon.ico");
+    /** Rutas exactas que no requieren sesión. */
+    public static final Set<String> PUBLICAS = ImmutableSet.of("/login", "/recuperar", "/favicon.ico");
+
+    /** Único prefijo público: recursos estáticos. */
+    private static final String PREFIJO_ESTATICO = "/static/";
 
     /** Rutas a las que entra cualquier usuario autenticado. */
     private static final Set<String> COMUNES = ImmutableSet.of("/cuenta", "/logout", "/sin-permiso");
@@ -52,14 +55,17 @@ public final class PoliticaAcceso {
     }
 
     public static boolean esPublica(String ruta) {
-        return PUBLICAS.stream().anyMatch(ruta::startsWith);
+        if (ruta == null || ruta.contains("..") || ruta.contains(";")) {
+            return false;
+        }
+        return PUBLICAS.contains(ruta) || ruta.startsWith(PREFIJO_ESTATICO);
     }
 
     public static boolean permite(String rol, String ruta) {
-        if (rol == null || ruta == null) {
+        if (rol == null || ruta == null || ruta.contains("..") || ruta.contains(";")) {
             return false;
         }
-        if (COMUNES.stream().anyMatch(ruta::startsWith)) {
+        if (COMUNES.stream().anyMatch(c -> ruta.equals(c) || ruta.startsWith(c + "/"))) {
             return true;
         }
         return MATRIZ.entrySet().stream()
