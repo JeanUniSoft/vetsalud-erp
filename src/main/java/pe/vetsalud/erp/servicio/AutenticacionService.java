@@ -30,39 +30,52 @@ public class AutenticacionService {
 
     public static final String MENSAJE_CREDENCIALES = "Usuario o contraseña incorrectos.";
 
+    /** Longitud de usuario.usuario y acceso_log.usuario_ingresado (S13, SEG-42). */
+    private static final int LONGITUD_MAXIMA_USUARIO = 40;
+
     private final UsuarioDao usuarios;
     private final AlertaDao alertas;
     private final ClaveHasher hasher;
     private final ParametroService parametros;
+    /** S13 (SEG-11): hash de relleno para gastar el mismo tiempo cuando la cuenta no existe. */
+    private final String hashSenuelo;
 
     public AutenticacionService(UsuarioDao usuarios, AlertaDao alertas, ClaveHasher hasher, ParametroService parametros) {
         this.usuarios = Preconditions.checkNotNull(usuarios);
         this.alertas = Preconditions.checkNotNull(alertas);
         this.hasher = Preconditions.checkNotNull(hasher);
         this.parametros = Preconditions.checkNotNull(parametros);
+        this.hashSenuelo = hasher.hashear(java.util.UUID.randomUUID().toString().toCharArray());
     }
 
     public UsuarioSesion autenticar(String usuario, String clave, String ip) throws SQLException {
         if (StringUtils.isAnyBlank(usuario, clave)) {
             throw new ReglaNegocioException("Ingrese su usuario y contraseña.");
         }
-        Optional<Usuario> encontrado = usuarios.buscarPorUsuario(usuario.trim());
+        String ingresado = StringUtils.left(usuario.trim(), LONGITUD_MAXIMA_USUARIO);
+        Optional<Usuario> encontrado = usuario.trim().length() > LONGITUD_MAXIMA_USUARIO
+                ? Optional.empty() : usuarios.buscarPorUsuario(ingresado);
         if (encontrado.isEmpty()) {
-            usuarios.registrarIntento(null, usuario.trim(), ip, false);
-            Auditoria.registrar("LOGIN_FALLIDO", "usuario", "usuario=" + usuario.trim() + " motivo=inexistente");
+            hasher.verificar(clave.toCharArray(), hashSenuelo);
+            usuarios.registrarIntento(null, ingresado, ip, false);
+            Auditoria.registrar("LOGIN_FALLIDO", "usuario", "usuario=" + ingresado + " motivo=inexistente");
             throw new ReglaNegocioException(MENSAJE_CREDENCIALES);
         }
         Usuario u = encontrado.get();
+        boolean claveCorrecta = hasher.verificar(clave.toCharArray(), u.claveHash());
         if (!u.activo()) {
             usuarios.registrarIntento(u.idUsuario(), usuario, ip, false);
-            throw new ReglaNegocioException("La cuenta está desactivada. Comuníquese con el administrador.");
+            // S13 (SEG-13): solo quien conoce la clave puede saber el estado de la cuenta
+            throw new ReglaNegocioException(claveCorrecta
+                    ? "La cuenta está desactivada. Comuníquese con el administrador." : MENSAJE_CREDENCIALES);
         }
         if (u.bloqueado()) {
             usuarios.registrarIntento(u.idUsuario(), usuario, ip, false);
-            throw new ReglaNegocioException(
-                    "La cuenta está bloqueada por intentos fallidos. Solicite el restablecimiento al administrador.");
+            throw new ReglaNegocioException(claveCorrecta
+                    ? "La cuenta está bloqueada por intentos fallidos. Solicite el restablecimiento al administrador."
+                    : MENSAJE_CREDENCIALES);
         }
-        if (!hasher.verificar(clave.toCharArray(), u.claveHash())) {
+        if (!claveCorrecta) {
             int maximo = parametros.entero(ParametroService.MAX_INTENTOS_LOGIN, 5);
             int intentos = u.intentosFallidos() + 1;
             boolean bloquear = intentos >= maximo;
